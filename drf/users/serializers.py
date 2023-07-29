@@ -55,13 +55,20 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('stu_id', 'first_name', 'last_name')
 
+
 class UserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=False)
+
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'password')
+        fields = ('stu_id', 'first_name', 'last_name', 'password', 'password2')
 
     def validate(self, data):
-        request_user = self.context['request'].user
-        if request_user != self.instance:
-            raise serializers.ValidationError("다른 사용자의 정보를 수정할 수 없습니다.")
+        password = data.get('password')
+        password2 = data.get('password2')
+
+        if password and password != password2:
+            raise serializers.ValidationError({"password": "비밀번호가 일치하지 않습니다."})
+
         return data
