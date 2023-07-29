@@ -1,4 +1,3 @@
-# serializers.py
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -45,10 +44,10 @@ class LoginSerializer(serializers.Serializer):
             password=data['password']
         )
         if user:
-            token = Token.objects.get_or_create(user=user)[0]
             if not user.is_active:
                 raise serializers.ValidationError({"error": "사용자가 아직 활성화되지 않았습니다."})
-            return token
+            data['user'] = user
+            return data
         raise serializers.ValidationError({"error": "제공된 자격 증명으로 로그인할 수 없습니다."})
 
 class UserSerializer(serializers.ModelSerializer):
