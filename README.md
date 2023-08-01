@@ -5,3 +5,5 @@
 
 - post and comment is done
 - need to test with token
+
+- need to connect sql
