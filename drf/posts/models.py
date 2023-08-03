@@ -18,7 +18,7 @@ class Post(models.Model):
                                  related_name='posts')
     body = models.TextField()
     published_date = models.DateTimeField(default=timezone.now)
-    files = models.FileField(upload_to='post_images/', blank=True, null=True)
+    # files = models.FileField(upload_to='post_images/', blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -38,3 +38,6 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.author}님이 {self.post.title}에 작성한 댓글"
 
+class File(models.Model):
+    file = models.FileField(upload_to='post_files/')
+    post = models.ForeignKey(Post, related_name='files', on_delete=models.CASCADE)

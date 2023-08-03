@@ -4,7 +4,6 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from .serializers import LoginSerializer, CustomUserSerializer, UserSerializer, UserUpdateSerializer
-
 from rest_framework.exceptions import NotFound
 
 User = get_user_model()

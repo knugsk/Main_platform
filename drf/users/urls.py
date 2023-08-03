@@ -2,6 +2,7 @@
 
 from django.urls import path, include
 from .views import RegisterView, LoginView, LogoutView, UserInfoView, UserUpdateView
+from rest_framework.routers import DefaultRouter
 
 urlpatterns = [
     path('register/', RegisterView.as_view()),

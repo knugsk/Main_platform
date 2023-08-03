@@ -28,6 +28,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'posts',
+
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [
@@ -45,7 +48,7 @@ ROOT_URLCONF = 'drf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
