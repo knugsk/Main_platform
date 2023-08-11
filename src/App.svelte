@@ -4,12 +4,13 @@
   import Router from "svelte-spa-router";
   import routes from "@routes/index";
 
+  let checked = false;
   const route_list: routeType[] = [
-    {name: "소개",  route: "/"},
-    {name: "공지",  route: "/notice"},
-    {name: "프로젝트",  route: "/project"},
-    {name: "명예의 전당", route: "/hall_of_fame"},
-    {name: "내 정보", route: "/my_page"},
+    {name: "소개",  route: "#/"},
+    {name: "공지",  route: "#/notice"},
+    {name: "프로젝트",  route: "#/project"},
+    {name: "명예의 전당", route: "#/hall_of_fame"},
+    {name: "내 정보", route: "#/my_page"},
   ];
 
   const top4_list: top4Type[]  = [] // {img_url: "", route: ""}
@@ -17,7 +18,7 @@
 </script>
 
 <div class="container_main wrapper">
-  <input type="checkbox" id="burger-toggle">
+  <input type="checkbox" id="burger-toggle" bind:checked={checked}>
   <label for="burger-toggle" class="burger-menu">
     <div class="line" />
     <div class="line" />
@@ -28,7 +29,7 @@
       <ul class="menu-nav">
         {#each route_list as route_data, index}
           <li class="menu-nav-item">
-            <a class="menu-nav-link" href={route_data.route} >
+            <a class="menu-nav-link" href={route_data.route} on:click={() => checked = false}>
               <span>
                 <div>
                   {route_data.name}

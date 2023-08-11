@@ -4,6 +4,6 @@
 
 <div class="container_mypage">
     <h1>
-        현대시각문화연구회
+        마이페이지
     </h1>
 </div>
