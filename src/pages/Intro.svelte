@@ -1,5 +1,7 @@
 <script lang="ts">
     import "./Intro.scss";
+
+    import { push } from "svelte-spa-router";
 </script>
 
 <div class="container_intro">
@@ -14,14 +16,14 @@
         </div>
     </div>
     <div class="container_auth">
-        <a class="btn_sign" href="#/sigin_up">
+        <a class="btn_sign" href="#/sign-up" on:click={() => push("/sign-up")}>
             <span>
                 <div class="black">
                     회원가입
                 </div>
             </span>
         </a>
-        <a class="btn_sign" href="#/sigin_in">
+        <a class="btn_sign" href="#/sign-in"  on:click={() => push("/sign-in")}>
             <span>
                 <div class="white">
                     로그인
@@ -29,4 +31,5 @@
             </span>
         </a>
     </div>
+    <img class="knu_logo" alt="logo" src="logo/knu_logo.jpg" />
 </div>

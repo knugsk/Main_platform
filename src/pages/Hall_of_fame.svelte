@@ -4,6 +4,6 @@
 
 <div class="container_hall_of_fame">
     <h1>
-        현대시각문화연구회
+        곧 옵니다! (Comming Soon!)
     </h1>
 </div>

@@ -1,12 +1,9 @@
 <script lang="ts">
-    import "./Project.scss";
+    import "./Budget.scss";
 
     import ProjectNav from "@/components/ProjectNav.svelte";
 </script>
 
-<div class="container_project">
+<div class="container_budget">
     <ProjectNav />
-    <h1>
-        현대시각문화연구회
-    </h1>
 </div>

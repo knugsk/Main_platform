@@ -8,12 +8,12 @@
   const route_list: routeType[] = [
     {name: "소개",  route: "#/"},
     {name: "공지",  route: "#/notice"},
-    {name: "프로젝트",  route: "#/project"},
+    {name: "창작반",  route: "#/project"},
     {name: "명예의 전당", route: "#/hall_of_fame"},
     {name: "내 정보", route: "#/my_page"},
   ];
 
-  const top4_list: top4Type[]  = [] // {img_url: "", route: ""}
+  let top4_list: top4Type[]  = [] // {img_url: "", route: ""}
 
 </script>
 
@@ -61,6 +61,7 @@
         </div>
       </div>
     </div>
+    <img class="knu_logo images" alt="logo" src="logo/knu_logo.jpg" />
   </div>
   <Router {routes} />
 </div>

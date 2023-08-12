@@ -8,6 +8,8 @@
     flex-direction: column;
 
     background-color: white;
+
+    overflow: hidden;
 }
 
 @font-face {
@@ -239,6 +241,15 @@ p {
     visibility: hidden;
     transition: 0.3s;
 
+    .knu_logo {
+        width: 16%;
+
+        position: absolute;
+
+        right: 0vw;
+        bottom: 0vh;
+    }
+
     @include sp-layout {
         display: block;
     }
@@ -257,6 +268,11 @@ p {
 
         &-item {
             flex: 1;
+        }
+
+        &-item:hover {
+            transform: scale(1.1);
+            transition: all 0.1s linear;
         }
 
         &-link {
