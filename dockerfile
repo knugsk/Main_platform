@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /drf
 
 # Copy the current directory contents into the container at /drf/drf
-COPY . /drf/drf/
+COPY . /drf/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
