@@ -1,12 +1,12 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10
+FROM python:3.10-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set the working directory
-WORKDIR /drf/drf
+WORKDIR /drf
 
 # Copy the current directory contents into the container at /drf/drf
 COPY . /drf/drf/
@@ -21,4 +21,4 @@ RUN mkdir -p /app/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD ["gunicorn", "--bind", ":8000", "drf.wsgi:application"]
+CMD exec gunicorn drf.wsgi:application --bind :8000
