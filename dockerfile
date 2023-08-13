@@ -17,8 +17,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make the /app/media directory for file uploads
 RUN mkdir -p /app/media
 
-RUN sudo apt-get remove libapache2-mod-python libapache2-mod-wsgi
-RUN sudo apt-get install libapache2-mod-wsgi-py3
 
 # Expose the port that Django runs on
 EXPOSE 8000
