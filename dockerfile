@@ -12,7 +12,7 @@ WORKDIR /Main_platform/drf
 COPY . /Main_platform/drf
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip freeze > requirements.txt
 
 # Make the /app/media directory for file uploads
 RUN mkdir -p /app/media
