@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /app/media
 
 # Expose the port that Django runs on
-EXPOSE 8000
+EXPOSE 8080
 
 # Run Django with Gunicorn when the container starts
 CMD exec gunicorn --bind :8000 drf.wsgi:application
