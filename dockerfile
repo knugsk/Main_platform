@@ -16,9 +16,6 @@ COPY . /drf
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set the Python path
-ENV PYTHONPATH "${PYTHONPATH}:/drf"
-
 # Make the /app/media directory for file uploads
 RUN mkdir -p /app/media
 
