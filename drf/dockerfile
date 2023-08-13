@@ -6,16 +6,16 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED True
 
 # Set the working directory
-WORKDIR /Main_platform/drf
+WORKDIR /Main_platform
 
 # Copy the current directory contents into the container at /Main_platform/drf
-COPY . /Main_platform/drf
+COPY . /Main_platform/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make the /app/media directory for file uploads
-RUN mkdir -p /app/media
+RUN mkdir -p /Main_platform/drf/media
 
 
 # Expose the port that Django runs on
