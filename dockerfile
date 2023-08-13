@@ -6,10 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set the working directory
-WORKDIR /drf
+WORKDIR /drf/drf
 
-# Copy the current directory contents into the container at /app
-COPY . /drf/
+# Copy the current directory contents into the container at /drf/drf
+COPY . /drf/drf/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
