@@ -23,4 +23,4 @@ RUN mkdir -p /app/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD exec uvicorn --port 8000 --host 0.0.0.0 drf.wsgi:application
+CMD exec gunicorn --bind :8000 drf.wsgi:application
