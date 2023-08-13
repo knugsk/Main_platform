@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory
 WORKDIR /drf
 
-# Copy the current directory contents into the container at /drf/drf
+# Copy the current directory contents into the container at /drf
 COPY . /drf/
 
 # Install any needed packages specified in requirements.txt
@@ -21,4 +21,4 @@ RUN mkdir -p /app/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD exec gunicorn drf.drf.wsgi:application --bind :8000
+CMD exec gunicorn --bind :8000 drf.wsgi:application
