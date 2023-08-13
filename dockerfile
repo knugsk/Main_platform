@@ -19,10 +19,6 @@ RUN mkdir -p /app/media
 
 # Expose the port that Django runs on
 EXPOSE 8000
-# ... (기존 내용을 유지한 상태에서)
-# Copy the Gunicorn configuration file into the container at /app
-COPY gunicorn.conf.py /Main_platform/drf/
 
-# Start Gunicorn with the custom configuration
-CMD ["gunicorn", "project_name.wsgi:application", "--config", "gunicorn.conf.py"]
-
+# Run Django with Gunicorn when the container starts
+CMD exec gunicorn --bind :8000 drf.wsgi:application
