@@ -21,4 +21,4 @@ RUN mkdir -p /app/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD ["gunicorn", "--bind", "0:8000", "drf.wsgi"]
+CMD ["python3", "manage.py", "runserver"]
