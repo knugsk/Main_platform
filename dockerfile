@@ -8,9 +8,6 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory
 WORKDIR /Main_platform
 
-# Copy the requirements file into the container at /app
-COPY requirements.txt /Main_platform/
-
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -21,4 +18,4 @@ COPY . /Main_platform/
 RUN python manage.py collectstatic --noinput
 
 # Start Gunicorn
-CMD ["gunicorn", "Main_platform.wsgi:application", "--bind", "0.0.0.0:8080"]
+CMD ["gunicorn", "Main_platform.drf.wsgi:application", "--bind", "0.0.0.0:8080"]
