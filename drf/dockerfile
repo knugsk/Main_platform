@@ -15,7 +15,7 @@ COPY . /Main_platform/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make the /app/media directory for file uploads
-RUN mkdir -p /Main_platform/drf/media
+RUN mkdir -p /Main_platform/drf/app/media
 
 
 # Expose the port that Django runs on
