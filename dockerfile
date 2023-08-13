@@ -16,6 +16,9 @@ COPY . /drf
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Set the Python path
+ENV PYTHONPATH "${PYTHONPATH}:/drf"
+
 # Make the /app/media directory for file uploads
 RUN mkdir -p /app/media
 
@@ -23,4 +26,4 @@ RUN mkdir -p /app/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD exec gunicorn --bind :8000 drf.wsgi:application
+CMD exec gunicorn --bind :8000 Main_platform.drf.wsgi:application
