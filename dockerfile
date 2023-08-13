@@ -11,7 +11,7 @@ ENV APP_HOME /Main_platform/drf
 WORKDIR /drf
 
 # Copy the current directory contents into the container at /drf
-COPY . ./
+COPY . /drf/drf
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
