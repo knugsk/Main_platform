@@ -6,10 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set the working directory
-WORKDIR /Main_platform/drf
+WORKDIR /Main_platform
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt /Main_platform/drf
+COPY requirements.txt /Main_platform/drf/
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
