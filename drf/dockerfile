@@ -5,8 +5,6 @@ FROM python:3.10
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED True
 
-ENV DJANGO_SETTINGS_MODULE=drf.settings
-
 
 # Set the working directory
 WORKDIR /Main_platform/drf
@@ -19,7 +17,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Make the /app/media directory for file uploads
 RUN mkdir -p /Main_platform/drf/BASE_DIR/media
-
 
 # Expose the port that Django runs on
 EXPOSE 8080
