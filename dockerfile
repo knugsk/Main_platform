@@ -25,4 +25,4 @@ RUN mkdir -p /Main_platform/drf/BASE_DIR/media
 EXPOSE 8000
 
 # Run Django with Gunicorn when the container starts
-CMD exec gunicorn --bind :8000 drf.drf.wsgi:application
+CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
