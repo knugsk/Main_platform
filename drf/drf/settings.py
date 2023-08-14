@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e*!l*ixe_bu*(1v*jd!p#4e*6ak)%11__6aeanf3-kf+0ufk&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["main-platform-fswhtfifva-du.a.run.app", "localhost"]
 
@@ -120,7 +120,7 @@ MEDIA_ROOT = os.path.join('BASE_DIR', 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-	"https://main-platform-fswhtfifva-du.a.run.app:8080",
+	"https://main-platform-fswhtfifva-du.a.run.app",
     'http://localhost:4173',
 ]
 
