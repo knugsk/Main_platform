@@ -22,7 +22,7 @@ RUN mkdir -p /Main_platform/drf/BASE_DIR/media
 
 
 # Expose the port that Django runs on
-EXPOSE 8000
+EXPOSE 8080
 
 # Run Django with Gunicorn when the container starts
-CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
+CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8080" ]
