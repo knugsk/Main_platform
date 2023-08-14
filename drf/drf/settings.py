@@ -122,3 +122,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
 	'http://localhost:4173',
 ]
+
+import socket
+def get_ipaddress():
+    host_name = socket.gethostname()
+    ip_address = socket.gethostbyname(host_name)
+    return "http://"+ip_address
+
+CSRF_TRUSTED_ORIGINS = [get_ipaddress()]
