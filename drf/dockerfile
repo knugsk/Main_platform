@@ -25,4 +25,4 @@ RUN mkdir -p /Main_platform/drf/BASE_DIR/media
 EXPOSE 8080
 
 # Run Django with Gunicorn when the container starts
-CMD [ "python3", "manage.py", "runserver"]
+CMD [ "python3", "manage.py", "runserver", ":8080"]
