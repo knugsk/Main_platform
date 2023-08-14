@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e*!l*ixe_bu*(1v*jd!p#4e*6ak)%11__6aeanf3-kf+0ufk&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["main-platform-fswhtfifva-du.a.run.app", "localhost"]
 
@@ -38,7 +38,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -121,12 +121,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
 	'http://localhost:4173',
+    "https://main-platform-fswhtfifva-du.a.run.app",
 ]
 
-import socket
-def get_ipaddress():
-    host_name = socket.gethostname()
-    ip_address = socket.gethostbyname(host_name)
-    return "http://"+ip_address
 
-CSRF_TRUSTED_ORIGINS = [get_ipaddress()]
+
