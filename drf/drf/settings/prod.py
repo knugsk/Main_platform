@@ -2,7 +2,7 @@ from .base import *
 import environ
 
 ALLOWED_HOSTS = ['*']
-
+""" 
 env = environ.Env()
 environ.Env.read_env(BASE_DIR / '.env')
 
@@ -16,3 +16,4 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
