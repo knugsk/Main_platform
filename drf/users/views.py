@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-from .serializers import LoginSerializer, CustomUserSerializer, UserSerializer, UserUpdateSerializer
+from rest_framework.authentication import TokenAuthentication
+from .serializers import LoginSerializer, CustomUserSerializer, UserSerializer
 from rest_framework.exceptions import NotFound
 
 User = get_user_model()
@@ -23,29 +24,36 @@ class LoginView(generics.GenericAPIView):
         return Response({"token": token.key}, status=status.HTTP_200_OK)
 
 class LogoutView(generics.DestroyAPIView):
+    
     permission_classes = [IsAuthenticated]
+    
+    def destroy(self, request, *args, **kwargs):
 
+        try:
+            token = Token.objects.get(user=request.user)
+            token.delete()
+            return Response({"detail": "성공적으로 로그아웃되었습니다."}, status=status.HTTP_200_OK)
+        except Token.DoesNotExist:
+            raise NotFound({"detail": "로그인되어 있지 않습니다."})
+
+        
+
+    """ 
     def destroy(self, request, *args, **kwargs):
         try:
             token = Token.objects.get(user=request.user)
             token.delete()
         except Token.DoesNotExist:
-            pass
+            raise NotFound({"detail": "로그인되어 있지 않습니다."})
+    """
 
-        return Response({"detail": "성공적으로 로그아웃되었습니다."}, status=status.HTTP_200_OK)
+        
 
 
 class UserInfoView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, )
     queryset = User.objects.all()
-
-    def get_object(self):
-        return self.request.user
-
-class UserUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = UserUpdateSerializer
 
     def get_object(self):
         return self.request.user

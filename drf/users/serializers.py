@@ -33,6 +33,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         )
         return user
 
+
 class LoginSerializer(serializers.Serializer):
     stu_id = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
@@ -50,18 +51,8 @@ class LoginSerializer(serializers.Serializer):
             return data
         raise serializers.ValidationError({"error": "제공된 자격 증명으로 로그인할 수 없습니다."})
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('stu_id', 'first_name', 'last_name')
-
-class UserUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ('first_name', 'last_name', 'password')
-
-    def validate(self, data):
-        request_user = self.context['request'].user
-        if request_user != self.instance:
-            raise serializers.ValidationError("다른 사용자의 정보를 수정할 수 없습니다.")
-        return data
