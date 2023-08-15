@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./Project.scss";
+    import "./MainPage_Project.scss";
 
     import ProjectNav from "@/components/ProjectNav.svelte";
 </script>

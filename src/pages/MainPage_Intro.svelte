@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./Intro.scss";
+    import "./MainPage_Intro.scss";
 
     import { is_login, access_token } from "@/lib/store";
     import { sign_out } from "query";

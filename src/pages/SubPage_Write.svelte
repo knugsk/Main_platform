@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./Write.scss";
+    import "./SubPage_Write.scss";
 
     let title = '';
     let content = [];

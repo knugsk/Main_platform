@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./Hall_of_fame.scss";
+    import "./MainPage_Hall_of_fame.scss";
 </script>
 
 <div class="container_hall_of_fame">

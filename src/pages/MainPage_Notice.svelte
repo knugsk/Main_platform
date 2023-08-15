@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./Notice.scss";
+    import "./MainPage_Notice.scss";
 </script>
 
 <div class="container_notice">

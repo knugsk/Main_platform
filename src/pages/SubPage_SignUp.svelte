@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./SignUp.scss";
+    import "./SubPage_SignUp.scss";
 
     import { pop } from "svelte-spa-router";
     import { sign_up } from "query";

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./SignIn.scss";
+    import "./SubPage_SignIn.scss";
 
     import Modal from "@/components/Modal.svelte";
 

@@ -1,9 +1,10 @@
 <script lang="ts">
-    import "./Job.scss";
+    import { onMount } from "svelte";
+    import "./MainPage_Budget.scss";
 
     import ProjectNav from "@/components/ProjectNav.svelte";
 </script>
 
-<div class="container_job">
+<div class="container_budget">
     <ProjectNav />
 </div>
