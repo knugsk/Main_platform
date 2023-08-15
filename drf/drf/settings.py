@@ -76,7 +76,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': '/cloudsql/brave-nucleus-395808:asia-northeast3:polls',  # Replace with your Cloud SQL instance connection name
-        'NAME': 'brave-nucleus-395808:asia-northeast3:polls',
+        'NAME': 'polls',
         'USER': 'postgres',
         'PASSWORD': 'testroot',
         'PORT': '',  # Leave empty to use the default PostgreSQL port
