@@ -6,9 +6,9 @@
 
   let checked = false;
   const route_list: routeType[] = [
-    {name: "소개",  route: "#/"},
+    {name: "홈",  route: "#/"},
     {name: "공지",  route: "#/notice"},
-    {name: "창작반",  route: "#/project"},
+    {name: "활동",  route: "#/project"},
     {name: "명예의 전당", route: "#/hall_of_fame"},
     {name: "내 정보", route: "#/my_page"},
   ];

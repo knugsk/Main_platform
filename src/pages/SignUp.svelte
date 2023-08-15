@@ -2,8 +2,10 @@
     import "./SignUp.scss";
 
     import { pop } from "svelte-spa-router";
+    import { sign_up } from "query";
 
-    let name = "";
+    let first_name = "";
+    let last_name = "";
 
     let student_code = "";
     let error_student_code = false;
@@ -43,8 +45,15 @@
     <div class="">
         <input 
             type="text"
-            bind:value={name}
-            placeholder="성명"
+            bind:value={first_name}
+            placeholder="성"
+        >
+    </div>
+    <div class="">
+        <input 
+            type="text"
+            bind:value={last_name}
+            placeholder="이름"
         >
     </div>
     <div class="box_student_code">
@@ -79,7 +88,16 @@
         <button class="btn_cancle" on:click={() => pop()}>
             취소
         </button>
-        <button class="btn_book">
+        <button class="btn_book" on:click={() => {
+            sign_up(
+                student_code,
+                first_name,
+                last_name,
+                password,
+                re_password
+            );
+            pop();
+        }}>
             신청
         </button>
     </div>

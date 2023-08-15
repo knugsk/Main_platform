@@ -21,6 +21,10 @@
         }
     },
     "include": [
+        "query/**/*.d.ts",
+        "query/**/*.ts",
+        "query/**/*.js",
+        "query/**/*.svelte",
         "routes/**/*.d.ts",
         "routes/**/*.ts",
         "routes/**/*.js",

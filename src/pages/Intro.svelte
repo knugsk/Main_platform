@@ -1,7 +1,9 @@
 <script lang="ts">
     import "./Intro.scss";
 
-    import { push } from "svelte-spa-router";
+    import { is_login, access_token } from "@/lib/store";
+    import { push, replace } from "svelte-spa-router";
+
 </script>
 
 <div class="container_intro">
@@ -16,20 +18,41 @@
         </div>
     </div>
     <div class="container_auth">
-        <a class="btn_sign" href="#/sign-up" on:click={() => push("/sign-up")}>
-            <span>
-                <div class="black">
-                    회원가입
-                </div>
-            </span>
-        </a>
-        <a class="btn_sign" href="#/sign-in"  on:click={() => push("/sign-in")}>
-            <span>
-                <div class="white">
-                    로그인
-                </div>
-            </span>
-        </a>
+        {#if $is_login}
+            <a class="btn_sign" href="#/sign-up" on:click={() => push("/sign-up")}>
+                <span>
+                    <div class="black">
+                        회원가입
+                    </div>
+                </span>
+            </a>
+            <a class="btn_sign" href="#/sign-in"  on:click={() => push("/sign-in")}>
+                <span>
+                    <div class="white">
+                        로그인
+                    </div>
+                </span>
+            </a>
+        {:else}
+            <a class="btn_sign" href="#/" on:click={() => {
+                access_token.update((token) => "");
+                is_login.update((b) => false);
+                console.log($is_login);
+            }}>
+                <span>
+                    <div class="black">
+                        로그아웃
+                    </div>
+                </span>
+            </a>
+            <a class="btn_sign" href="#/my_page"  on:click={() => replace("/my_page")}>
+                <span>
+                    <div class="white">
+                        내 정보
+                    </div>
+                </span>
+            </a> 
+        {/if}
     </div>
     <img class="knu_logo" alt="logo" src="logo/knu_logo.jpg" />
 </div>
