@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'cloudsql/brave-nucleus-395808',  # Replace with your Cloud SQL instance connection name
+        'HOST': 'cloudsql/brave-nucleus-395808:test',  # Replace with your Cloud SQL instance connection name
         'NAME': 'test',
         'USER': 'postgres',
         'PASSWORD': 'testroot',
