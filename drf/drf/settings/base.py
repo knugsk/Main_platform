@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = 'django-insecure-e*!l*ixe_bu*(1v*jd!p#4e*6ak)%11__6aeanf3-kf+0ufk&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -110,6 +110,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+   'rest_framework.authentication.TokenAuthentication',
+   )
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
