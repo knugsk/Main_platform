@@ -74,14 +74,15 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': '/cloudsql/brave-nucleus-395808:asia-northeast3:polls',  # Replace with your Cloud SQL instance connection name
         'NAME': 'brave-nucleus-395808:asia-northeast3:polls',
         'USER': 'postgres',
         'PASSWORD': 'testroot',
-        'HOST': '34.64.62.81',
-        'PORT': '8080',
+        'PORT': '',  # Leave empty to use the default PostgreSQL port
     }
 }
+
 
 
 # Password validation
@@ -126,7 +127,7 @@ if DEBUG:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join('BASE_DIR', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
