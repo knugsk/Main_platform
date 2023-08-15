@@ -75,10 +75,10 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'polls',
+        'NAME': 'brave-nucleus-395808:asia-northeast3:polls',
         'USER': 'postgres',
         'PASSWORD': 'testroot',
-        'HOST': '127.0.0.1',
+        'HOST': '34.64.62.81',
         'PORT': '8080',
     }
 }
