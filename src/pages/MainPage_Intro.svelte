@@ -4,6 +4,9 @@
     import { is_login, access_token } from "@/lib/store";
     import { sign_out } from "query";
     import { push, replace } from "svelte-spa-router";
+
+    import Modal_SignInError from "@/components/Modal_SignInError.svelte";
+    let showModal = false;
 </script>
 
 <div class="container_intro">
@@ -43,7 +46,7 @@
                     </div>
                 </span>
             </a>
-            <a class="btn_sign" href="#/my_page"  on:click={() => replace("/my_page")}>
+            <a class="btn_sign" href="#/my_page"  on:click={() => showModal = true}>
                 <span>
                     <div class="white">
                         내 정보
@@ -54,3 +57,13 @@
     </div>
     <img class="knu_logo" alt="logo" src="logo/knu_logo.jpg" />
 </div>
+
+<Modal_SignInError bind:showModal>
+	<h2 slot="header">
+        Comming Soon..
+	</h2>
+
+	<ol class="definition-list">
+        <li>곧 돌아옵니다.</li>
+	</ol>
+</Modal_SignInError>

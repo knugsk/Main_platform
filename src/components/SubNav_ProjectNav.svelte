@@ -4,9 +4,9 @@
     import { replace } from "svelte-spa-router";
 
     const route_list: routeType[] = [
-        {name: "프로젝트",  route: "#/project"},
-        {name: "구인구직",  route: "#/job"},
-        {name: "예산", route: "#/budget"},
+        {name: "프로젝트",  route: "#/contents/project"},
+        {name: "구인구직",  route: "#/contents/job"},
+        {name: "예산", route: "#/contents/budget"},
     ];
 </script>
 

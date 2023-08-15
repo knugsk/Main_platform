@@ -7,10 +7,9 @@
   let checked = false;
   const route_list: routeType[] = [
     {name: "홈",  route: "#/"},
-    {name: "공지",  route: "#/notice"},
-    {name: "활동",  route: "#/project"},
+    {name: "공지",  route: "#/contents/notice"},
+    {name: "활동",  route: "#/contents/project"},
     {name: "명예의 전당", route: "#/hall_of_fame"},
-    {name: "내 정보", route: "#/my_page"},
   ];
 
   let top4_list: top4Type[]  = [] // {img_url: "", route: ""}

@@ -36,7 +36,11 @@ const sign_in = async (stu_id: string, password: string): Promise<boolean> => {
 const sign_out = async () => {
     try {
         await axios
-            .delete(api + "/users/logout/")
+            .delete(api + "/users/logout/", {
+                headers: {
+                    Authorization: "Token " + get(access_token),
+                },
+            })
             .then((res) => {
                 access_token.set("");
                 is_login.set(false);

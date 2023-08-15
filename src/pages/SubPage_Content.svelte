@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import "./SubPage_Content.scss";
-
+    
 </script>
 
 <div class="container_content">

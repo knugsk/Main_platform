@@ -124,6 +124,7 @@ p {
         & ~ .menu {
             opacity: 1;
             visibility: visible;
+            z-index: 100;
 
             .menu-nav-link span div,
             img,
