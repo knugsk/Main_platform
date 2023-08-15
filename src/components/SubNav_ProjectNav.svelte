@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "./PorjectNav.scss";
+    import "./SubNav_PorjectNav.scss";
 
     import { replace } from "svelte-spa-router";
 

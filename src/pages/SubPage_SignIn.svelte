@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./SubPage_SignIn.scss";
 
-    import Modal from "@/components/Modal.svelte";
+    import Modal_SignInError from "@/components/Modal_SignInError.svelte";
 
     import { pop } from "svelte-spa-router";
     import { sign_in } from "query";
@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<Modal bind:showModal>
+<Modal_SignInError bind:showModal>
 	<h2 slot="header">
         로그인 에러
 	</h2>
@@ -55,4 +55,4 @@
         <li>아직 등록되지 않거나 일치하지 않는 정보입니다.</li>
 		<li>학번과 비밀번호를 다시 확인해주세요.</li>
 	</ol>
-</Modal>
+</Modal_SignInError>
