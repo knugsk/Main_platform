@@ -21,7 +21,7 @@ const sign_in = async (stu_id: string, password: string): Promise<boolean> => {
             },
         });
 
-        if (res.data.token !== null || res.data.token !== undefined) {
+        if (res.data.token !== null && res.data.token !== undefined) {
             access_token.set(res.data.token);
             is_login.set(true);
             user_id.set(stu_id);
@@ -99,4 +99,34 @@ const get_my_info = async () => {
         });
 };
 
-export { sign_in, sign_up, sign_out, get_my_info };
+// Contents
+const get_contents = async (contents_id: string): Promise<any> => {
+    try {
+        const res = await axios.get(api + `/posts/categories/${contents_id}/`);
+
+        if (res.data !== null && res.data !== undefined) {
+            return res.data;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+
+    return null;
+};
+
+// Content
+const get_content = async (content_id: string): Promise<any> => {
+    try {
+        const res = await axios.get(api + `/posts/posts/${content_id}/`);
+
+        if (res.data !== null && res.data !== undefined) {
+            return res.data;
+        }
+    } catch (err) {
+        return null;
+    }
+
+    return null;
+};
+
+export { sign_in, sign_up, sign_out, get_my_info, get_contents, get_content };
