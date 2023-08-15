@@ -19,6 +19,16 @@ class PostListView(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated | IsStaffOrAdminWriteOnly]
 
+    def perform_create(self, serializer):
+        category_id = self.request.data.get('category')
+        category = Category.objects.get(pk=category_id)
+
+        if category.name in ['notice', 'closed']:
+            if not self.request.user.is_staff and not self.request.user.is_superuser:
+                return Response("You are not authorized to create posts in this category.", status=status.HTTP_403_FORBIDDEN)
+
+        serializer.save(author=self.request.user)
+
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -35,6 +45,8 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
             return response
         else:
             return Response("파일이 존재하지 않습니다.", status=status.HTTP_404_NOT_FOUND)
+        
+
 class CommentListView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
