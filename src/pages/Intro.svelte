@@ -2,8 +2,8 @@
     import "./Intro.scss";
 
     import { is_login, access_token } from "@/lib/store";
+    import { sign_out } from "query";
     import { push, replace } from "svelte-spa-router";
-
 </script>
 
 <div class="container_intro">
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="container_auth">
-        {#if $is_login}
+        {#if $is_login === false}
             <a class="btn_sign" href="#/sign-up" on:click={() => push("/sign-up")}>
                 <span>
                     <div class="black">
@@ -35,9 +35,7 @@
             </a>
         {:else}
             <a class="btn_sign" href="#/" on:click={() => {
-                access_token.update((token) => "");
-                is_login.update((b) => false);
-                console.log($is_login);
+                sign_out();
             }}>
                 <span>
                     <div class="black">

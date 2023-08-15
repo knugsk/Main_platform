@@ -1,11 +1,13 @@
 import axios from "axios";
 
-import { access_token, is_login } from "@/lib/store";
+import { get } from "svelte/store";
+import { access_token, user_id, is_login } from "@/lib/store";
 
 const api_url = import.meta.env.VITE_API_URL;
 const api_port = import.meta.env.VITE_API_PORT;
 const api = api_url + (api_port === "" ? "" : ":" + api_port);
 
+// Sign
 const sign_in = async (stu_id: string, password: string): Promise<boolean> => {
     let frm = new FormData();
 
@@ -20,8 +22,9 @@ const sign_in = async (stu_id: string, password: string): Promise<boolean> => {
         });
 
         if (res.data.token !== null || res.data.token !== undefined) {
-            access_token.update((token) => res.data.token);
-            is_login.update((b) => true);
+            access_token.set(res.data.token);
+            is_login.set(true);
+            user_id.set(stu_id);
             return true;
         }
     } catch (err) {
@@ -29,6 +32,23 @@ const sign_in = async (stu_id: string, password: string): Promise<boolean> => {
     }
 
     return false;
+};
+const sign_out = async () => {
+    try {
+        await axios
+            .delete(api + "/users/logout/")
+            .then((res) => {
+                access_token.set("");
+                is_login.set(false);
+                user_id.set("");
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    } catch (err) {
+        console.log(err);
+    }
 };
 const sign_up = async (
     stu_id: string,
@@ -59,4 +79,20 @@ const sign_up = async (
         });
 };
 
-export { sign_in, sign_up };
+// Mypage
+const get_my_info = async () => {
+    await axios
+        .get(api + "/users/user/" + get(user_id), {
+            headers: {
+                Authorization: get(access_token),
+            },
+        })
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+export { sign_in, sign_up, sign_out, get_my_info };

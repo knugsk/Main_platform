@@ -10,6 +10,8 @@ import JobDetail from "@/pages/JobDetail.svelte";
 import Budget from "@/pages/Budget.svelte";
 import BudgetDetail from "@/pages/BudgetDetail.svelte";
 
+import Content from "@/pages/Content.svelte";
+
 import SignUp from "@/pages/SignUp.svelte";
 import SignIn from "@/pages/SignIn.svelte";
 
@@ -38,6 +40,7 @@ export default {
     /**
      * Sub Pages
      */
+    "/content/*": Content,
     "/project/*": ProjectDetail,
     "/job/*": JobDetail,
     "/budget/*": BudgetDetail,
