@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'posts',
     'drf_yasg',
     'corsheaders',
+    'storages',
 
 ]
 

@@ -1,6 +1,8 @@
 from .base import *
 import environ, django
 
+from django.core import *
+
 ALLOWED_HOSTS = ['*']
 
 DEBUG = False
