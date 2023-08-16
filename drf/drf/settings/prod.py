@@ -1,5 +1,5 @@
 from .base import *
-import environ
+import environ, django
 
 ALLOWED_HOSTS = ['*']
 
@@ -22,5 +22,6 @@ DATABASES = {
 from .aws import *
 
 if env('AWS_S3_ACCESS_KEY_ID') and env('AWS_S3_SECRET_ACCESS_KEY') and env('AWS_STORAGE_BUCKET_NAME'):
-    DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
-    STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
+    if django.VERSION < (4, 2):
+        DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
+        STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
