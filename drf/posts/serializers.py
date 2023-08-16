@@ -17,6 +17,7 @@ class FileSerializer(serializers.ModelSerializer):
         fields = ('id', 'file', 'post')
 
 class PostSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
     files = FileSerializer(many=True, required=False)
     comments = CommentSerializer(many=True, read_only=True)
 

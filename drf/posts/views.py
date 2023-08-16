@@ -10,9 +10,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 
-class CategoryListView(generics.ListAPIView):
+class CategoryRetrieveView(generics.RetrieveAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    lookup_field = 'id'
+
+class CategoryPostListView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        category_id = self.kwargs['id']
+        return Post.objects.filter(category_id=category_id)
 
 class PostListView(generics.ListCreateAPIView):
     queryset = Post.objects.all()

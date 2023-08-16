@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import CategoryListView, PostListView, PostDetailView, CommentListView, CommentDetailView, FileListCreateView, FileRetrieveUpdateDestroyView
+from .views import CategoryPostListView, PostListView, PostDetailView, CommentListView, CommentDetailView, FileListCreateView, FileRetrieveUpdateDestroyView
 
 urlpatterns = [
-    path('categories/', CategoryListView.as_view(), name='category-list'),
+    path('categories/<int:id>/posts', CategoryPostListView.as_view(), name='category-detail'),
     path('posts/', PostListView.as_view(), name='post-list'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('comments/', CommentListView.as_view(), name='comment-list'),
