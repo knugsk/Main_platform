@@ -3,6 +3,7 @@
 
     import { beforeUpdate } from "svelte";
     import { get_content } from "query";
+    import { pop } from "svelte-spa-router";
 
     export let params: { content_id: string } = { content_id: "" }
 
@@ -17,16 +18,16 @@
             });
     }
 
-    beforeUpdate(async () => {
-        await get_data();
+    beforeUpdate(() => {
+        data = null;
+        get_data();
     });
-
 </script>
 
 <div class="container_content">
     {#if data !== null && data !== undefined}
         <div class="container_left">
-            <button class="nav_content" on:click={() => {}}>
+            <button class="nav_content" on:click={() => {pop();}}>
                 <p class="text_titleOrAuthor">{"< 뒤로가기"}</p>
             </button>
             <div class="board_files">

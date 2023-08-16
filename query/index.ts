@@ -100,9 +100,11 @@ const get_my_info = async () => {
 };
 
 // Contents
-const get_contents = async (contents_id: string): Promise<any> => {
+const get_contents = async (contents_id: number): Promise<any> => {
     try {
-        const res = await axios.get(api + `/posts/categories/${contents_id}/`);
+        const res = await axios.get(
+            api + `/posts/categories/${contents_id}/posts`
+        );
 
         if (res.data !== null && res.data !== undefined) {
             return res.data;

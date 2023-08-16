@@ -170,9 +170,9 @@ p {
     --burger-menu-radius: 4em;
 
     position: fixed;
-    top: 5vh;
-    left: 5vw;
-    z-index: 100;
+    top: 1vh;
+    left: 1vw;
+    z-index: 101;
     display: block;
     width: var(--burger-menu-radius);
     height: var(--burger-menu-radius);
@@ -208,7 +208,7 @@ p {
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--primary-color-darker);
+            background: rgba(white, 1);
             transform: translateX(-100%);
             transition: 0.25s;
         }
@@ -236,7 +236,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #1a1e23;
+    background: rgba(black, 1);
     opacity: 0;
     overflow-x: hidden;
     visibility: hidden;
