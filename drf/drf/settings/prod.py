@@ -3,6 +3,8 @@ import environ
 
 ALLOWED_HOSTS = ['*']
 
+DEBUG = False
+
 env = environ.Env()
 environ.Env.read_env('/home/ubuntu/Main_platform/drf/drf/.env')
 
@@ -19,13 +21,6 @@ DATABASES = {
 
 from .aws import *
 
-if AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME:
-    # 장고 4.2부터 스토리지 클래스 지정방법이 변경되었습니다.
-    STORAGES = {
-        "default": {
-            "BACKEND": "core.storages.aws.AwsMediaStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "core.storages.aws.AwsStaticStorage",
-        },
-    }
+if env('AWS_S3_ACCESS_KEY_ID') and env('AWS_S3_SECRET_ACCESS_KEY') and env('AWS_STORAGE_BUCKET_NAME'):
+    DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
+    STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
