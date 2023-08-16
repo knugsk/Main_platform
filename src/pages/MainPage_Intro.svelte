@@ -46,13 +46,13 @@
                     </div>
                 </span>
             </a>
-            <a class="btn_sign" href="#/my_page"  on:click={() => showModal = true}>
+            <!-- <a class="btn_sign" href="#/my_page"  on:click={() => showModal = true}>
                 <span>
                     <div class="white">
                         내 정보
                     </div>
                 </span>
-            </a> 
+            </a>  -->
         {/if}
     </div>
     <img class="knu_logo" alt="logo" src="logo/knu_logo.jpg" />
