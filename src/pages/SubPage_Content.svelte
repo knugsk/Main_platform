@@ -25,27 +25,41 @@
 
 <div class="container_content">
     {#if data !== null && data !== undefined}
+        <div class="container_left">
+            <button class="nav_content" on:click={() => {}}>
+                <p class="text_titleOrAuthor">{"< 뒤로가기"}</p>
+            </button>
+            <div class="board_files">
+                
+            </div>
+        </div>
         <div class="board_content">
             <div class="box_main">
-                <div class="box_title">
-                    <div class="title">
-                        <h1>{data.title}</h1>
+                <div class="box_titleAndAuthor">
+                    <div class="box_title">
+                        <p class="text_titleOrAuthor">{data.title}</p>
                     </div>
-                    <div class="author">
-                        <p>{data.author}</p>
+                    <div class="box_author">
+                        <p class="text_titleOrAuthor">{data.author}</p>
                     </div>
                 </div>
-                <div class="content">
+                <div class="box_content">
                     <p>{data.body}</p>
                 </div>
-            </div>
-            <div class="files">
-
             </div>
         </div>
         <div class="board_comment">
             <div class="box_comment">
-                
+                {#each data.comments as comment, index}
+                    <div class="card_comment">
+                        <p class="text_comment">
+                            작성자: {comment.author}
+                        </p>
+                        <p class="text_comment">
+                            {comment.author}
+                        </p>
+                    </div>
+                {/each}
             </div>
         </div>
     {:else}

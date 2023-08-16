@@ -5,12 +5,12 @@
     align-items: center;
     justify-content: center;
 
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .board_content {
-    width: 78%;
-    height: 68%;
+    width: 30%;
+    height: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,25 +20,60 @@
     flex-direction: row;
 
     background-color: rgba(green, 0.15);
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
+    border-radius: 25px;
 }
-.board_comment {
-    width: 78%;
-    height: 18%;
+.container_left {
+    width: 19%;
+    height: 82%;
+    display: flex;
+    align-items: first;
+    justify-content: center;
+
+    margin-right: 1%;
+
+    flex-direction: column;
+}
+.nav_content {
+    width: 40%;
+    height: 5%;
+
+    margin-left: 5%;
+
+    background-color: rgba(#a0e0e0, 0.4);
+    border-radius: 25px;
+}
+.board_files {
+    width: 98%;
+    height: 94%;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    margin-top: 2%;
+    padding: 1%;
+
+    background-color: rgba(gray, 0.1);
+    border-radius: 25px;
+}
+.board_comment {
+    width: 18%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-direction: column;
+
+    margin-left: 1%;
+
     padding: 1%;
 
     background-color: rgba(red, 0.1);
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-radius: 25px;
 }
 
 .box_main {
-    width: 75%;
+    width: 100%;
     height: 100%;
 
     display: flex;
@@ -46,12 +81,10 @@
     justify-content: center;
 
     flex-direction: column;
-
-    margin-right: 2%;
 }
-.box_title {
+.box_titleAndAuthor {
     width: 100%;
-    height: 10%;
+    height: 5%;
 
     display: flex;
     align-items: center;
@@ -59,19 +92,18 @@
 
     flex-direction: row;
 }
-.title {
-    width: 80%;
+.box_title {
+    width: 70%;
     height: 100%;
 
     display: flex;
     align-items: center;
-    justify-content: center;
 
     background-color: white;
-    border-radius: 25px;
+    border-radius: 15px;
 }
-.author {
-    width: 18%;
+.box_author {
+    width: 28%;
     height: 100%;
 
     margin-left: 2%;
@@ -81,11 +113,11 @@
     justify-content: center;
 
     background-color: white;
-    border-radius: 25px;
+    border-radius: 15px;
 }
-.content {
+.box_content {
     width: 92%;
-    height: 86%;
+    height: 91%;
 
     margin-top: 2%;
 
@@ -96,23 +128,7 @@
     display: flex;
 
     background-color: white;
-    border-radius: 25px;
-
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-.files {
-    width: 21%;
-    height: 96%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 1%;
-
-    background-color: white;
-    border-radius: 25px;
+    border-radius: 15px;
 
     overflow-x: hidden;
     overflow-y: scroll;
@@ -120,12 +136,54 @@
 
 .box_comment {
     width: 100%;
-    height: 100%;
+    height: 90%;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+
+    flex-direction: column;
+}
+.card_comment {
+    width: 100%;
+    min-height: 10%;
+
+    padding: 2%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-bottom: 3%;
 
     background-color: white;
-    border-radius: 25px;
+    border-radius: 15px;
+}
+
+.text_titleOrAuthor {
+    font-size: 100%;
+    text-align: left;
+
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.text_title {
+    width: 100%;
+    font-size: 80%;
+    text-align: left;
+
+    margin-top: 0.5%;
+
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.text_comment {
+    font-size: 80%;
+    text-align: left;
+
+    margin-top: 0.5%;
+
+    margin-left: 10%;
+    margin-right: 10%;
+
+    word-wrap: break-word;
 }
