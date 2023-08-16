@@ -3,9 +3,10 @@
 
     import SubNav_ProjectNav from "@/components/SubNav_ProjectNav.svelte";
     
-    import { beforeUpdate } from "svelte";
+    import { afterUpdate, beforeUpdate, onMount } from "svelte";
     import { get_contents } from "query";
     import koreantime from "@/lib/datetime";
+    import { push } from "svelte-spa-router";
 
     export let params: { contents_id: string } = { contents_id: "" }
 
@@ -14,10 +15,10 @@
     let page: number = 1;
     let max_page: number = 1;
 
-    const get_data = async () => {
+    const get_data = async (contents_id: string) => {
         let id = 1;
 
-        switch (params.contents_id) {
+        switch (contents_id) {
             case "notice":
                 id = 1;
                 title = "공지사항";
@@ -46,10 +47,7 @@
             });
     }
     
-    beforeUpdate(() => {
-        data = null;
-        get_data();
-    });
+    $: data = get_data(params.contents_id)
 </script>
 
 <div class="container_contents">
@@ -60,16 +58,16 @@
     <div class="container_bar">
         {#if data !== null && data !== undefined}
             {#each data as content, index }
-                <button class="bar_content">
+                <button class="bar_content" on:click={() => {push(`/contents/content/${content.id}`);}}>
                     <p class="text_bar">{content.title}</p>
                     <p class="text_bar">{koreantime(content.published_date)}</p>
                     <p class="text_bar">{`작성자: ${content.author}`}</p>
                 </button>
             {/each}
         {/if}
-        <div class="pagination">
+    </div>
+    <div class="pagination">
 
-        </div>
     </div>
 </div>
 

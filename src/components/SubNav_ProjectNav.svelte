@@ -14,7 +14,7 @@
     <ul class="menu_a-nav">
         {#each route_list as route_data, index}
             <li class="menu_a-nav-item">
-                <a class="menu_a-nav-link" href={route_data.route} on:click={() => replace(route_data.route)}>
+                <a class="menu_a-nav-link" href={route_data.route} on:click={() => { replace(route_data.route); }}>
                     <span>
                         <div>
                             {route_data.name}

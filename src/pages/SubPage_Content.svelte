@@ -1,37 +1,47 @@
 <script lang="ts">
     import "./SubPage_Content.scss";
 
-    import { beforeUpdate } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
     import { get_content } from "query";
     import { pop } from "svelte-spa-router";
+    import { deflateRaw } from "zlib";
 
     export let params: { content_id: string } = { content_id: "" }
 
     let data: any = null;
 
-    const get_data = async () => {
-        get_content(params.content_id)
+    const get_data = async (content_id: string) => {
+        get_content(content_id)
             .then(res => {
                 if(data !== null || data !== undefined) data = res;
+                console.log(data);
             }).catch(err => {
                 console.log(err);
             });
     }
 
-    beforeUpdate(() => {
-        data = null;
-        get_data();
-    });
+    $: data = get_data(params.content_id)
+
+    function filterImages(arr: any) {
+        return arr.filter((item: any) => {
+            const lowerCaseItem = item.toLowerCase();
+            return lowerCaseItem.endsWith('.png') || lowerCaseItem.endsWith('.jpeg') || lowerCaseItem.endsWith('.jpg');
+        });
+    }
 </script>
 
 <div class="container_content">
-    {#if data !== null && data !== undefined}
+    {#if data !== null && data !== undefined && data.comments !== null && data.comments !== undefined}
         <div class="container_left">
             <button class="nav_content" on:click={() => {pop();}}>
                 <p class="text_titleOrAuthor">{"< 뒤로가기"}</p>
             </button>
             <div class="board_files">
-                
+                {#each filterImages(data.files) as file, index}
+                    <div class="card_comment">
+                        <p>file</p>
+                    </div>
+                {/each}
             </div>
         </div>
         <div class="board_content">
@@ -45,7 +55,9 @@
                     </div>
                 </div>
                 <div class="box_content">
-                    <p>{data.body}</p>
+                    <p class="box_content_text">
+                        {data.body}
+                    </p>
                 </div>
             </div>
         </div>
@@ -61,6 +73,10 @@
                         </p>
                     </div>
                 {/each}
+            </div>
+            <div class="box_send_comment">
+                <textarea class="textarea_comment"/>
+                <button class="btn_send_comment" />
             </div>
         </div>
     {:else}
