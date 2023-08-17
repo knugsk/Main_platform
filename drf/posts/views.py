@@ -120,6 +120,20 @@ class CommentCreateView(generics.CreateAPIView):
         user = token.user
         serializer.save(author=user)
 
+class CommentReplyCreateView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        parent_comment_id = self.kwargs.get('parent_comment_id')
+        parent_comment = Comment.objects.get(pk=parent_comment_id)
+
+        token_key = self.request.META.get('HTTP_AUTHORIZATION', '').split(' ')[1]
+        token = Token.objects.get(key=token_key)
+        user = token.user
+
+        serializer.save(author=user, parent_comment=parent_comment)
 
 class FileListCreateView(generics.ListCreateAPIView):
     queryset = File.objects.all()
