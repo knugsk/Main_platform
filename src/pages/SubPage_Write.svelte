@@ -1,37 +1,32 @@
 <script lang="ts">
     import "./SubPage_Write.scss";
 
-    let title = '';
-    let content = [];
-    let youtubeLink = '';
+    import { post } from "query";
+    import { pop } from "svelte-spa-router";
 
-    let imageFile;
-    let imageUrl;
+    let title = "";
+    let content = "";
+    let category = "";
 
-    function handleSubmit() {
-        console.log("Title:", title);
-        console.log("Content:", content);
-        console.log("YouTube Link:", youtubeLink);
-        console.log("Image URL:", imageUrl);
+    let selectedFiles = [];
+
+    const handleSubmit = async () => {
+        await post(title, content, category, selectedFiles)
+          .then(res => {
+            if (res) {
+              pop();
+            }
+            else {
+              console.log("err");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
     }
 
-    function handleImageUpload(event) {
-        imageFile = event.target.files[0];
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-        imageUrl = e.target.result;
-        };
-
-        reader.readAsDataURL(imageFile);
-    }
-
-    function addImageToContent() {
-        if (imageUrl) {
-        content = [...content, { type: 'image', src: imageUrl }];
-        imageFile = null;
-        imageUrl = '';
-        }
+    function handleUpload(event) {
+      selectedFiles = Array.from(event.target.files);
     }
 </script>
 
@@ -40,24 +35,19 @@
     <form class="form" on:submit|preventDefault={handleSubmit}>
       <label>
         제목:
-        <input bind:value={title} />
+        <input type="text" class="input_title" bind:value={title} />
+      </label>
+      <label>
+        카테고리:
+        <input class="input_category" bind:value={category} />
       </label>
       <textarea class="content" bind:value={content}></textarea>
       <div class="input_element">
         <label>
-          Image:
-          <input type="file" accept="image/*" on:change={handleImageUpload} />
-          <button type="button" on:click={addImageToContent}>Add Image to Content</button>
+          사진 및 파일:
+          <input type="file" multiple on:change={handleUpload} />
         </label>
       </div>
-      <button type="submit">Submit</button>
+      <button class="submit">글 쓰기</button>
     </form>
-  
-    {#each content as item, index (index)}
-      {#if item.type === 'image'}
-        <img src={item.src} alt={`Image ${index}`} style="max-width: 100%; height: auto;" />
-      {:else if item.type === 'text'}
-        <p>{item.text}</p>
-      {/if}
-    {/each}
 </div>

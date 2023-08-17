@@ -55,7 +55,6 @@ const sign_out = async () => {
     }
 };
 const sign_up = async (
-    stu_id: string,
     first_name: string,
     last_name: string,
     password: string,
@@ -63,7 +62,7 @@ const sign_up = async (
 ) => {
     let frm = new FormData();
 
-    frm.append("stu_id", stu_id);
+    frm.append("stu_id", get(user_id));
     frm.append("first_name", first_name);
     frm.append("last_name", last_name);
     frm.append("password", password);
@@ -88,7 +87,7 @@ const get_my_info = async () => {
     await axios
         .get(api + "/users/user/" + get(user_id), {
             headers: {
-                Authorization: get(access_token),
+                Authorization: "Token " + get(access_token),
             },
         })
         .then((res) => {
@@ -131,4 +130,47 @@ const get_content = async (content_id: string): Promise<any> => {
     return null;
 };
 
-export { sign_in, sign_up, sign_out, get_my_info, get_contents, get_content };
+// Post
+const post = async (
+    title: string,
+    content: string,
+    category: string,
+    files: File[]
+): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("title", title);
+    frm.append("category", category);
+    frm.append("body", content);
+
+    for (let i = 0; i < files.length; i++) {
+        frm.append("files", files[i]);
+    }
+
+    try {
+        const res = await axios.post(api + `/posts/posts/`, frm, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        if (res.data !== null && res.data !== undefined) {
+            return res.data;
+        }
+    } catch (err) {
+        return null;
+    }
+
+    return null;
+};
+
+export {
+    sign_in,
+    sign_up,
+    sign_out,
+    get_my_info,
+    get_contents,
+    get_content,
+    post,
+};

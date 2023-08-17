@@ -64,6 +64,11 @@
                     <p class="text_bar">{`작성자: ${content.author}`}</p>
                 </button>
             {/each}
+            {#if data.length === 0}
+                <div class="box_non_contents">
+                    <h1>게시글이 없어요!</h1>
+                </div>
+            {/if}
         {/if}
     </div>
     <div class="pagination">
