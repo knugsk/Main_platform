@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.CharField(read_only=True)
+    parent_comment = serializers.PrimaryKeyRelatedField(queryset=Comment.objects.all(), allow_null=True, required=False)
     class Meta:
         model = Comment
         fields = '__all__'
