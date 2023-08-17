@@ -9,6 +9,7 @@ DEBUG = False
 
 env = environ.Env()
 environ.Env.read_env('/home/ubuntu/Main_platform/drf/drf/.env')
+AWS_STORAGE_BUCKET_NAME='bucket-xgthnf'
 
 DATABASES = {
     'default': {
@@ -23,7 +24,7 @@ DATABASES = {
 
 from .aws import *
 
-if env('AWS_S3_ACCESS_KEY_ID') and env('AWS_S3_SECRET_ACCESS_KEY') and env('AWS_STORAGE_BUCKET_NAME'):
-    if django.VERSION < (4, 2):
-        DEFAULT_FILE_STORAGE = "core.storages.aws.AwsMediaStorage"
-        STATICFILES_STORAGE = "core.storages.aws.AwsStaticStorage"
+if AWS_STORAGE_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE='drf.settings.aws.AwsMediaStorage'
+    STATICFILES_STORAGE='drf.settings.aws.AwsStaticStorage'
+    AWS_QUERYSTRING_AUTH=False
