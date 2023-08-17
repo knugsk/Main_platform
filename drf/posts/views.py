@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
+from rest_framework.exceptions import PermissionDenied
+
 from rest_framework.decorators import action
 from rest_framework import status
 
@@ -27,14 +29,14 @@ from rest_framework.authtoken.models import Token
 class PostListView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated | IsStaffOrAdminWriteOnly]
 
     def perform_create(self, serializer):
         category_name = self.request.data.get('category')
         try:
             category = Category.objects.get(name=category_name)
         except Category.DoesNotExist:
-            return Response("잘못된 카테고리 이름입니다.", status=status.HTTP_400_BAD_REQUEST)
+            raise Response("잘못된 카테고리 이름입니다.", status=status.HTTP_400_BAD_REQUEST)
 
         title = self.request.data.get('title')
         body = self.request.data.get('body')
@@ -45,7 +47,7 @@ class PostListView(generics.ListCreateAPIView):
         user = token.user
 
         if (category.name == 'notice' or category.name == 'closed') and (not user.is_staff or not user.is_superuser):
-            return Response("이 카테고리에 글을 작성할 권한이 없습니다.", status=status.HTTP_403_FORBIDDEN)
+            raise PermissionDenied("이 카테고리에 글을 작성할 권한이 없습니다.", code=403)
         else:
             serializer.save(author=user, category=category, title=title, body=body)
 
@@ -87,6 +89,25 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthorOrStaffOrAdmin]
+
+    def perform_update(self, serializer):
+        comment = self.get_object()
+        if comment.author == self.request.user or self.request.user.is_staff or self.request.user.is_admin:
+            serializer.save()
+        else:
+            raise PermissionDenied("You do not have permission to update this comment.")
+
+    def perform_destroy(self, instance):
+        if instance.author == self.request.user or self.request.user.is_staff or self.request.user.is_admin:
+            instance.delete()
+        else:
+            raise PermissionDenied("You do not have permission to delete this comment.")
+
 
 class CommentCreateView(generics.CreateAPIView):
     queryset = Comment.objects.all()
