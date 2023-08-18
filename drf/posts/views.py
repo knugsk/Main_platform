@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-import os
-import uuid
+from urllib.parse import unquote
 from urllib.parse import quote
+
 
 from rest_framework.exceptions import PermissionDenied
 
@@ -57,18 +57,10 @@ class PostListView(generics.ListCreateAPIView):
             serializer.save(author= user, category=category, title=title, body=body)
 
             # 파일 정보 저장
-
-
             for file_data in files_data:
-            # 원래 파일 이름 가져오기
-                original_file_name = file_data.name
-                _, file_extension = os.path.splitext(original_file_name)
 
-                # 새로운 파일 이름 생성 (원래 파일 이름 + 랜덤 UUID + 확장자)
-                new_file_name = quote(f"url-{uuid.uuid4()}{file_extension}")
-
-                # Post 모델에 파일 정보 저장
-                File.objects.create(file=new_file_name, post=serializer.instance)
+                serializer.save(author=user, category=category, title=title, body=body)
+                File.objects.create(file=file_data, post=serializer.instance)
 
 
 from rest_framework import status
