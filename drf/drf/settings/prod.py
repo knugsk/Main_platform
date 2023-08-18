@@ -27,4 +27,6 @@ from .aws import *
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE='drf.settings.aws.AwsMediaStorage'
     STATICFILES_STORAGE='drf.settings.aws.AwsStaticStorage'
-
+    AWS_S3_OBJECT_PARAMETERS={
+        'ServerSideEncryption': 'utf-8'|'aws:kms'|'aws:kms:dsse',
+    }
