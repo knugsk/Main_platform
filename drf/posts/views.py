@@ -59,7 +59,7 @@ class PostListView(generics.ListCreateAPIView):
             # 파일 정보 저장
             for file_data in files_data:
                 
-                original_filename = file_data.name.encode('utf-8').decode('utf-8')  # Encode and then decode to ensure utf-8
+                original_filename = file_data.name.encode('utf-8')  # Encode and then decode to ensure utf-8
 
                 file_instance = File(file=file_data, post=serializer.instance)
                 file_instance.file.name = original_filename  # Set the original filename to the file instance
