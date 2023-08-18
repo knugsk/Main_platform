@@ -53,20 +53,19 @@ class PostListView(generics.ListCreateAPIView):
         if (category.name == 'notice' or category.name == 'closed') and (not user.is_staff or not user.is_superuser):
             raise PermissionDenied("이 카테고리에 글을 작성할 권한이 없습니다.", code=403)
         else:
-            
             files_data = self.request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
 
             serializer.save(author= user, category=category, title=title, body=body)
 
             # 파일 정보 저장
             for file_data in files_data:
-
-                # 파일 이름 원본으로 설정
+                original_filename = file_data.name  # Get the original filename from the uploaded file
+                
                 file_instance = File(file=file_data, post=serializer.instance)
+                file_instance.file.name = original_filename  # Set the original filename to the file instance
+                
+                file_instance.save()  # Save the file instance
 
-                file_instance.file.name = file_data.name
-
-                file_instance.save()
 
 from rest_framework import status
 from rest_framework.response import Response
