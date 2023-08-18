@@ -152,3 +152,20 @@ class FileListCreateView(generics.ListCreateAPIView):
 class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
+
+    def perform_update(self, serializer):
+        # Get the list of uploaded files
+        files_data = self.request.FILES.getlist('files')
+
+        # Delete existing files associated with the file instance
+        serializer.instance.file.delete()
+
+        # Store the new uploaded files
+        for file_data in files_data:
+            file_instance = File(file=file_data, post=serializer.instance)
+            file_instance.save()
+
+    def perform_destroy(self, instance):
+        instance.file.delete()  # Delete the associated file
+        instance.delete()  # Delete the file instance
+        return Response(status=status.HTTP_204_NO_CONTENT)
