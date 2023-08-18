@@ -6,12 +6,18 @@
 
     let title = "";
     let content = "";
-    let category = "";
+    let selected_category;
+
+    let categories = [
+      { id: 1, text: "프로젝트", category: "active" },
+      { id: 2, text: "구인구직", category: "hellowork"},
+      { id: 3, text:  "예산", category: "budget" }
+    ];
 
     let selectedFiles = [];
 
     const handleSubmit = async () => {
-        await post(title, content, category, selectedFiles)
+        await post(title, content, selected_category.category, selectedFiles)
           .then(res => {
             if (res) {
               pop();
@@ -39,7 +45,13 @@
       </label>
       <label>
         카테고리:
-        <input class="input_category" bind:value={category} />
+        <select class="input_category" bind:value={selected_category} on:change={() => {console.log(selected_category);}}>
+          {#each categories as category}
+            <option value={category}>
+              {category.text}
+            </option>
+          {/each}
+        </select>
       </label>
       <textarea class="content" bind:value={content}></textarea>
       <div class="input_element">

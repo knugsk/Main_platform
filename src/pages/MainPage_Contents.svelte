@@ -41,13 +41,17 @@
 
         get_contents(id)
             .then(res => {
-                if(data !== null || data !== undefined) data = res;
+                if(data !== null || data !== undefined) {
+                    if (Array.isArray(res)) {
+                        data = [...res].reverse();
+                    }
+                }
             }).catch(err => {
                 console.log(err);
             });
     }
     
-    $: data = get_data(params.contents_id)
+    $: data = get_data(params.contents_id);
 </script>
 
 <div class="container_contents">

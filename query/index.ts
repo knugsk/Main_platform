@@ -130,6 +130,29 @@ const get_content = async (content_id: string): Promise<any> => {
     return null;
 };
 
+// Comment Post
+const post_comment = async (post: string, text: string): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("post", post);
+    frm.append("text", text);
+
+    try {
+        const res = await axios.post(api + `/posts/comments/create/`, frm, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        if (res.data !== null && res.data !== undefined) return res.data;
+
+        return null;
+    } catch (err) {
+        return null;
+    }
+};
+
 // Post
 const post = async (
     title: string,
@@ -144,7 +167,7 @@ const post = async (
     frm.append("body", content);
 
     for (let i = 0; i < files.length; i++) {
-        frm.append("file", files[i]);
+        frm.append("files", files[i]);
     }
 
     try {
@@ -171,4 +194,5 @@ export {
     get_contents,
     get_content,
     post,
+    post_comment,
 };
