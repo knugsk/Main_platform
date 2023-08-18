@@ -60,9 +60,11 @@ class PostListView(generics.ListCreateAPIView):
 
             # 파일 정보 저장
             for file_data in files_data:
-                file_name = f"{serializer.instance.id}-{file_data.name}"
 
-                file_instance = File(file=file_name, post=serializer.instance)
+                # 파일 이름 원본으로 설정
+                file_data.name = file_data.name.split('/')[-1]                
+
+                file_instance = File(file=file_data, post=serializer.instance)
                 file_instance.save()
 
 from rest_framework import status
