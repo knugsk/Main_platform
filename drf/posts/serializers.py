@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FileSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = File
         fields = ('id', 'file', 'post')
