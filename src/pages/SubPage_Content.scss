@@ -131,6 +131,67 @@
 
     flex-direction: column;
 }
+.box_btn_modfiy {
+    width: 100%;
+    height: 8%;
+
+    margin: 0;
+    padding: 0;
+
+    margin-top: 2%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    flex-direction: row;
+}
+.btn_main_modify {
+    width: 20%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    margin-right: 5%;
+
+    border-radius: 15px;
+    border-width: 0px;
+    background-color: #e39e25;
+
+    font-size: bold;
+    color: white;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.1s linear;
+    }
+}
+.btn_main_delete {
+    width: 20%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    border-radius: 15px;
+    border-width: 0px;
+    background-color: #101010;
+
+    font-size: bold;
+    color: white;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.1s linear;
+    }
+}
 .box_titleAndAuthor {
     width: 100%;
     height: 5%;
@@ -293,10 +354,69 @@
 
     margin-bottom: 3%;
 
+    border-width: 0px;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        opacity: 0.8;
+        transform: scale(1.03);
+        transition: all 0.1s linear;
+    }
+
     background-color: white;
     border-radius: 15px;
 }
+.index_comment_child {
+    width: 6%;
+    height: 100%;
 
+    display: flex;
+
+    background-color: transparent;
+}
+.card_comment_child {
+    width: 85%;
+    height: 96%;
+
+    margin-top: 5%;
+
+    padding: 2%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-width: 0px;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        opacity: 0.8;
+        transform: scale(1.03);
+        transition: all 0.1s linear;
+    }
+
+    margin-bottom: 3%;
+
+    background-color: white;
+    border-radius: 15px;
+}
+.box_comment_child {
+    width: 96%;
+    height: 10%;
+
+    margin-bottom: 5%;
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+}
 .text_titleOrAuthor {
     font-size: 100%;
     text-align: left;
@@ -314,6 +434,15 @@
     margin-left: 10%;
     margin-right: 10%;
 }
+.text_num_child_comment {
+    font-size: 80%;
+    text-align: right;
+
+    position: fixed;
+
+    top: 15%;
+    right: 8%;
+}
 .text_comment {
     font-size: 80%;
     text-align: left;
@@ -329,4 +458,80 @@
     font-size: 80%;
 
     color: white;
+}
+.modify_btn {
+    display: flex;
+    position: fixed;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    bottom: 3%;
+    left: 0.1%;
+}
+.btn_svg_comment {
+    border-width: 0px;
+    background-color: transparent;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    margin: 0;
+    padding: 0;
+
+    .svg {
+        width: 45%;
+        height: 30%;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    &:hover {
+        opacity: 0.9;
+        transform: scale(1.5);
+        transition: all 0.1s linear;
+    }
+}
+.center {
+    justify-content: center;
+}
+.btn_delete_file {
+    width: 20%;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    position: absolute;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    border-width: 0px;
+
+    right: 1%;
+    bottom: 1%;
+
+    .svg {
+        width: 60%;
+        height: 30%;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        opacity: 0.9;
+        transform: scale(2);
+        transition: all 0.1s linear;
+    }
 }

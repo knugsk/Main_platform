@@ -45,7 +45,6 @@ const sign_out = async () => {
                 access_token.set("");
                 is_login.set(false);
                 user_id.set("");
-                console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -74,9 +73,7 @@ const sign_up = async (
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then((res) => {
-            console.log(res.data);
-        })
+        .then((res) => {})
         .catch((err) => {
             console.log(err);
         });
@@ -90,16 +87,44 @@ const get_my_info = async () => {
                 Authorization: "Token " + get(access_token),
             },
         })
-        .then((res) => {
-            console.log(res);
-        })
+        .then((res) => {})
         .catch((err) => {
             console.log(err);
         });
 };
 
 // Contents
-const get_contents = async (contents_id: number): Promise<any> => {
+export interface IAuthor {
+    first_name: string;
+    last_name: string;
+}
+
+export interface IFile {
+    id: string;
+    file: string;
+    post: string;
+}
+
+export interface IComment {
+    id: string;
+    text: string;
+    post: string;
+    parent_comment: string;
+    author: IAuthor;
+}
+
+export interface IPost {
+    id: string;
+    category: string;
+    author: IAuthor;
+    title: string;
+    body: string;
+    files: IFile[];
+    comments: IComment[];
+    published_date: string;
+}
+
+const get_contents = async (contents_id: number): Promise<IPost[]> => {
     try {
         const res = await axios.get(
             api + `/posts/categories/${contents_id}/posts`
@@ -116,7 +141,7 @@ const get_contents = async (contents_id: number): Promise<any> => {
 };
 
 // Content
-const get_content = async (content_id: string): Promise<any> => {
+const get_content = async (content_id: string): Promise<IPost> => {
     try {
         const res = await axios.get(api + `/posts/posts/${content_id}/`);
 
@@ -128,6 +153,83 @@ const get_content = async (content_id: string): Promise<any> => {
     }
 
     return null;
+};
+const modify_content = async (
+    content_id: string,
+    title: string,
+    content: string,
+    category: string
+): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("title", title);
+    frm.append("category", category);
+    frm.append("body", content);
+
+    try {
+        const res = await axios.patch(api + `/posts/posts/${content_id}`, frm, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+const delete_content = async (content_id: string): Promise<boolean> => {
+    try {
+        const res = await axios.delete(api + `/posts/posts/${content_id}/`, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+const modify_file = async (
+    content_id: string,
+    files: File[]
+): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("post", content_id);
+    for (let i = 0; i < files.length; i++) {
+        frm.append("files", files[i]);
+    }
+
+    try {
+        const res = await axios.post(api + `/posts/files`, frm, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+const delete_file = async (file_id: string): Promise<boolean> => {
+    try {
+        const res = await axios.delete(api + `/posts/files/${file_id}`, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
 };
 
 // Comment Post
@@ -150,6 +252,73 @@ const post_comment = async (post: string, text: string): Promise<boolean> => {
         return null;
     } catch (err) {
         return null;
+    }
+};
+const post_comment_child = async (
+    post: string,
+    text: string,
+    parent_comment: string
+): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("post", post);
+    frm.append("text", text);
+    frm.append("parent_comment", parent_comment);
+
+    try {
+        const res = await axios.post(
+            api + `/posts/comments/${parent_comment}/replies/`,
+            frm,
+            {
+                headers: {
+                    Authorization: "Token " + get(access_token),
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        if (res.data !== null && res.data !== undefined) return res.data;
+
+        return null;
+    } catch (err) {
+        return null;
+    }
+};
+const delete_comment = async (id: string): Promise<boolean> => {
+    try {
+        const res = await axios.delete(api + `/posts/comments/${id}/`, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
+const modify_comment = async (
+    id: string,
+    post: string,
+    text: string
+): Promise<boolean> => {
+    let frm = new FormData();
+
+    frm.append("post", post);
+    frm.append("text", text);
+
+    try {
+        const res = await axios.patch(api + `/posts/comments/${id}/`, frm, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
     }
 };
 
@@ -193,6 +362,13 @@ export {
     get_my_info,
     get_contents,
     get_content,
+    modify_content,
+    delete_content,
+    modify_file,
+    delete_file,
     post,
     post_comment,
+    post_comment_child,
+    delete_comment,
+    modify_comment,
 };

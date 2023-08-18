@@ -27,6 +27,7 @@ export default {
      * Utils
      */
     "/write": SubPage_Write,
+    "/write/:content_id": SubPage_Write,
     "/sign-up": SubPage_SignUp,
     "/sign-in": SubPage_SignIn,
 

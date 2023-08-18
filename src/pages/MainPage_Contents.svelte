@@ -65,7 +65,7 @@
                 <button class="bar_content" on:click={() => {push(`/contents/content/${content.id}`);}}>
                     <p class="text_bar">{content.title}</p>
                     <p class="text_bar">{koreantime(content.published_date)}</p>
-                    <p class="text_bar">{`작성자: ${content.author}`}</p>
+                    <p class="text_bar">{`작성자: ${content.author.first_name} ${content.author.last_name}`}</p>
                 </button>
             {/each}
             {#if data.length === 0}

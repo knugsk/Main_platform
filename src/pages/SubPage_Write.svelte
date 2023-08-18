@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./SubPage_Write.scss";
 
-    import { post } from "query";
+    import { post, get_content, type IPost, modify_content } from "query";
     import { pop } from "svelte-spa-router";
 
     let title = "";
@@ -16,7 +16,10 @@
 
     let selectedFiles = [];
 
+    export let params: { content_id: string } = { content_id: "" };
+
     const handleSubmit = async () => {
+      if(params.content_id === "") {
         await post(title, content, selected_category.category, selectedFiles)
           .then(res => {
             if (res) {
@@ -29,10 +32,49 @@
           .catch(err => {
             console.log(err);
           });
+      }
+      else {
+        await modify_content(params.content_id, title, content, selected_category.category)
+          .then(res => {
+            if (res) {
+              pop();
+            }
+            else {
+              console.log("err");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
 
     function handleUpload(event) {
       selectedFiles = Array.from(event.target.files);
+    }
+
+    let data: IPost = null;
+    const get_data = async (content_id: string) => {
+        get_content(content_id)
+            .then(res => {
+                if(data !== null || data !== undefined) {
+                  data = res;
+                  title = data.title;
+                  content = data.body;
+                  console.log(title, data, data.category);
+                  categories.forEach(category => {
+                    if(data.category === category.category) {
+                      selected_category = category;
+                    }
+                  })
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+    }
+
+    if(params.content_id !== "") {
+      get_data(params.content_id);
     }
 </script>
 
@@ -54,12 +96,14 @@
         </select>
       </label>
       <textarea class="content" bind:value={content}></textarea>
-      <div class="input_element">
-        <label>
-          사진 및 파일:
-          <input type="file" multiple on:change={handleUpload} />
-        </label>
-      </div>
-      <button class="submit">글 쓰기</button>
+      {#if params.content_id === ""}
+        <div class="input_element">
+          <label>
+            사진 및 파일:
+            <input type="file" multiple on:change={handleUpload} />
+          </label>
+        </div>
+      {/if}
+      <button class="submit">{params.content_id === "" ? "글 쓰기" : "수정하기"}</button>
     </form>
 </div>
