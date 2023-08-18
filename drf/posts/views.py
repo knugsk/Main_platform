@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 from urllib.parse import unquote
+from urllib.parse import quote
 
 
 from rest_framework.exceptions import PermissionDenied
@@ -58,10 +59,9 @@ class PostListView(generics.ListCreateAPIView):
             # 파일 정보 저장
             for file_data in files_data:
                 
-                original_filename = unquote(file_data.name)  # Decode URL-encoded filename
+                file_data.file.name = quote(file_data.file.name)
 
                 file_instance = File(file=file_data, post=serializer.instance)
-                file_instance.file.name = original_filename  # Set the original filename to the file instance
                 file_instance.save()  # Save the file instance
 
 
