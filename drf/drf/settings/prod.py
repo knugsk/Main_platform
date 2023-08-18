@@ -28,3 +28,4 @@ if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE='drf.settings.aws.AwsMediaStorage'
     STATICFILES_STORAGE='drf.settings.aws.AwsStaticStorage'
     AWS_QUERYSTRING_AUTH=False
+    AWS_S3_ENCRYPTION=False

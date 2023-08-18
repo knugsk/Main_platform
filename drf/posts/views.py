@@ -62,7 +62,7 @@ class PostListView(generics.ListCreateAPIView):
             for file_data in files_data:
 
                 # 파일 이름 원본으로 설정
-                file_data.name = file_data.name.split('/')[-1]                
+                
 
                 file_instance = File(file=file_data, post=serializer.instance)
                 file_instance.save()
