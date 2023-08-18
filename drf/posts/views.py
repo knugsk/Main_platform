@@ -67,7 +67,7 @@ class PostListView(generics.ListCreateAPIView):
             # 새로운 파일 이름 생성 (원래 파일 이름 + 랜덤 UUID + 확장자)
                 new_file_name = f"url-{uuid.uuid4()}{file_extension}"
 
-                File.objects.create(file=file_data, post=serializer.instance)
+                File.objects.create(file=new_file_name, post=serializer.instance)
 
 from rest_framework import status
 from rest_framework.response import Response
