@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-from django.core.files.storage import default_storage
+import os
+import uuid
 from urllib.parse import quote
-
 
 from rest_framework.exceptions import PermissionDenied
 
@@ -60,19 +60,15 @@ class PostListView(generics.ListCreateAPIView):
 
 
             for file_data in files_data:
-                # Upload the file to S3
-                file_path = default_storage.save(file_data.name, file_data)
-                
-                # Create a custom URL using the file path
-                encoded_path = quote(file_path)
-                custom_url = f"https://your-bucket-name.s3.amazonaws.com/media/{encoded_path}"
-                
-                # Now you can use the custom_url as needed
-                
-                file_instance = File(file=file_data, post=serializer.instance)
-                file_instance.custom_url = custom_url  # Save the custom URL in your model, if needed
-                file_instance.save()
+            # 원래 파일 이름 가져오기
+                original_file_name = file_data.name
+                _, file_extension = os.path.splitext(original_file_name)
 
+                # 새로운 파일 이름 생성 (원래 파일 이름 + 랜덤 UUID + 확장자)
+                new_file_name = quote(f"url-{uuid.uuid4()}{file_extension}")
+
+                # Post 모델에 파일 정보 저장
+                File.objects.create(file=new_file_name, post=serializer.instance)
 
 
 from rest_framework import status
