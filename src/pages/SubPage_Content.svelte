@@ -54,7 +54,7 @@
 
     function extractFileNameFromUrl(url) {
         const parts = url.split('/');
-        return parts[parts.length - 1];
+        return parts[parts.length - 1].split("?")[0];
     }
 
     const newWindowPhoto = (link: string) => {
