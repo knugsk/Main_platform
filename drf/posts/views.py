@@ -64,7 +64,7 @@ class PostListView(generics.ListCreateAPIView):
                 file_name = file_data.name
                 key = f"{serializer.instance.id}-{file_name}"
 
-                File.objects.create(file=key, post=serializer.instance)
+                File.objects.create(file=files_data, post=serializer.instance)
 
 from rest_framework import status
 from rest_framework.response import Response
