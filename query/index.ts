@@ -144,7 +144,7 @@ const post = async (
     frm.append("body", content);
 
     for (let i = 0; i < files.length; i++) {
-        frm.append("files", files[i]);
+        frm.append("file", files[i]);
     }
 
     try {
@@ -155,14 +155,12 @@ const post = async (
             },
         });
 
-        if (res.data !== null && res.data !== undefined) {
-            return res.data;
-        }
+        if (res.data !== null && res.data !== undefined) return res.data;
+
+        return null;
     } catch (err) {
         return null;
     }
-
-    return null;
 };
 
 export {
