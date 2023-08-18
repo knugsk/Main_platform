@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-from urllib.parse import unquote
+from django.core.files.storage import default_storage
 from urllib.parse import quote
 
 
@@ -57,12 +57,22 @@ class PostListView(generics.ListCreateAPIView):
             serializer.save(author= user, category=category, title=title, body=body)
 
             # 파일 정보 저장
-            for file_data in files_data:
-                
-                file_data.file.name = quote(file_data.file.name)
 
+
+            for file_data in files_data:
+                # Upload the file to S3
+                file_path = default_storage.save(file_data.name, file_data)
+                
+                # Create a custom URL using the file path
+                encoded_path = quote(file_path)
+                custom_url = f"https://your-bucket-name.s3.amazonaws.com/media/{encoded_path}"
+                
+                # Now you can use the custom_url as needed
+                
                 file_instance = File(file=file_data, post=serializer.instance)
-                file_instance.save()  # Save the file instance
+                file_instance.custom_url = custom_url  # Save the custom URL in your model, if needed
+                file_instance.save()
+
 
 
 from rest_framework import status
