@@ -3,7 +3,7 @@ import environ, django
 
 from django.core import *
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['3.35.121.91', 'knugsk.com']
 
 DEBUG = False
 
