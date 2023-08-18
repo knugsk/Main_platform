@@ -59,11 +59,7 @@ class PostListView(generics.ListCreateAPIView):
 
             # 파일 정보 저장
             for file_data in files_data:
-                original_filename = file_data.name  # Get the original filename from the uploaded file
-                
                 file_instance = File(file=file_data, post=serializer.instance)
-                file_instance.file.name = original_filename  # Set the original filename to the file instance
-                
                 file_instance.save()  # Save the file instance
 
 

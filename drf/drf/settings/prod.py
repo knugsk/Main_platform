@@ -31,4 +31,8 @@ if AWS_STORAGE_BUCKET_NAME:
     AWS_QUERYSTRING_AUTH = False   
     AWS_S3_FILE_OVERWRITE = False
     AWS_S3_ADDRESSING_STYLE = "path"
+    AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',  # Cache 설정 (선택 사항)
+    'ContentDisposition': 'inline',  # 다운로드를 위한 설정 (선택 사항)
+}
 
