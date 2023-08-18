@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Category, Post, Comment, File
 from users.models import CustomUser
 
+from urllib.parse import unquote
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
