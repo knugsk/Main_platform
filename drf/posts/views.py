@@ -49,8 +49,12 @@ class PostListView(generics.ListCreateAPIView):
         if (category.name == 'notice' or category.name == 'closed') and (not user.is_staff or not user.is_superuser):
             raise PermissionDenied("이 카테고리에 글을 작성할 권한이 없습니다.", code=403)
         else:
+            files_data = self.request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
             serializer.save(author=user, category=category, title=title, body=body)
 
+            # 파일 정보 저장
+            for file_data in files_data:
+                File.objects.create(file=file_data, post=serializer.instance)
 
 
 from rest_framework import status
@@ -71,6 +75,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
             return Response("잘못된 카테고리 이름입니다.", status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save(category=category)
+        
 
     # 파일 다운로드 액션 유지 (이전 설명 참고)
     @action(detail=True, methods=['GET'])
