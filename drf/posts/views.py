@@ -61,10 +61,10 @@ class PostListView(generics.ListCreateAPIView):
             # 파일 정보 저장
             for file_data in files_data:
 
-                file_name = file_data.name
-                key = f"{serializer.instance.id}-{file_name}"
+                file_name = f"{serializer.instance.id}-{file_data.name}"
 
-                File.objects.create(file=files_data, post=serializer.instance)
+                file_instance = File(file=file_data, post=serializer.instance)
+                file_instance.save()
 
 from rest_framework import status
 from rest_framework.response import Response
