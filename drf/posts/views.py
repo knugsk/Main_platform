@@ -63,6 +63,8 @@ class PostListView(generics.ListCreateAPIView):
 
                 file_name = f"{serializer.instance.id}-{file_data.name}"
 
+                file_data.name = file_name
+
                 file_instance = File(file=file_data, post=serializer.instance)
                 file_instance.save()
 
