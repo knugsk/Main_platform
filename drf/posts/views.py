@@ -54,12 +54,15 @@ class PostListView(generics.ListCreateAPIView):
             raise PermissionDenied("이 카테고리에 글을 작성할 권한이 없습니다.", code=403)
         else:
             files_data = self.request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
-
             serializer.save(author= user, category=category, title=title, body=body)
 
             # 파일 정보 저장
             for file_data in files_data:
+                
+                original_filename = file_data.name.encode('utf-8').decode('utf-8')  # Encode and then decode to ensure utf-8
+
                 file_instance = File(file=file_data, post=serializer.instance)
+                file_instance.file.name = original_filename  # Set the original filename to the file instance
                 file_instance.save()  # Save the file instance
 
 
