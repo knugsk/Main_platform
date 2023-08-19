@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = 'django-insecure-e*!l*ixe_bu*(1v*jd!p#4e*6ak)%11__6aeanf3-kf+0ufk&&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -122,9 +122,17 @@ REST_FRAMEWORK = {
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_DIR = os.path.join(BASE_DIR, '/static/')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static', 'logo'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join('BASE_DIR', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
