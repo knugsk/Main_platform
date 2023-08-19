@@ -4,7 +4,7 @@ import environ, django
 from django.core import *
 
 ALLOWED_HOSTS = ['3.35.121.91', 'knugsk.com']
-
+ACCESS_CONTROL_ALLOW_ORIGIN = ['*']
 DEBUG = False
 
 env = environ.Env()
@@ -26,8 +26,6 @@ from .aws import *
 
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE='drf.settings.aws.AwsMediaStorage'
-    STATICFILES_STORAGE='drf.settings.aws.AwsStaticStorage'
-    STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/'
     """ 
     AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.{S3 리전}.amazonaws.com"
     AWS_S3_FILE_OVERWRITE = False
