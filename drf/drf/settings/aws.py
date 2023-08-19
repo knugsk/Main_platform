@@ -13,5 +13,5 @@ class AwsMediaStorage(S3Boto3Storage):
 #  - "static" 폴더에 저장되도록 location 설정을 해줍니다.
 #  - "public-read" 권한으로 업로드되도록 default_acl 설정을 해줍니다.
 class AwsStaticStorage(S3StaticStorage):
-    location='static'
+    location='static/'
     default_acl='public-read'
