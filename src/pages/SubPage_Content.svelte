@@ -17,6 +17,7 @@
     let is_child_comment: string = "0";
     let is_modify = false;
     let modify_id = "0";
+    let body = "";
 
     let num_child_comment = {};
 
@@ -166,7 +167,7 @@
                 </div>
                 <div class="box_content">
                     <textarea disabled class="box_content_text">
-                        {data.body}
+                        {"\n" + data.body}
                     </textarea>
                     <div class="box_content_img">
                         {#each filterImages(data.files) as file, index}
