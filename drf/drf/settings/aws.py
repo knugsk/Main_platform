@@ -1,5 +1,4 @@
 from storages.backends.s3boto3 import S3Boto3Storage
-from storages.backends.s3boto3 import S3StaticStorage
 
 # 장고 MEDIA 파일을 다루는 각종 설정을 커스텀할 수 있습니다.
 #  - "media" 폴더에 저장되도록 location 설정을 해줍니다.
