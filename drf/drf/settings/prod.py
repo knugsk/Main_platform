@@ -5,6 +5,10 @@ from django.core import *
 
 ALLOWED_HOSTS = ['3.35.121.91', 'knugsk.com']
 ACCESS_CONTROL_ALLOW_ORIGIN = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ['https://3.35.121.91/', 'https://knugsk.com/']
 DEBUG = False
 
 env = environ.Env()
@@ -26,8 +30,6 @@ from .aws import *
 
 if AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE='drf.settings.aws.AwsMediaStorage'
-    """ 
     AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.{S3 리전}.amazonaws.com"
     AWS_S3_FILE_OVERWRITE = False
     AWS_QUERYSTRING_AUTH = False
-    """
