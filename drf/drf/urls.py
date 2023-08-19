@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-
+from django.views.generic import TemplateView
 from django.views.static import serve
 from django.urls import re_path
 
@@ -25,7 +25,8 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('posts/', include('posts.urls')),
 
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root':settings.STATIC_ROOT}),
+
+    path('', TemplateView.as_view(template_name='index.html')),
 
 ] 
 
