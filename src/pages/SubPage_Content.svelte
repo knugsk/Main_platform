@@ -76,6 +76,8 @@
         await modify_file(params.content_id, files).then(b => {
             if(b) get_data(params.content_id);
         });
+
+        await get_data(params.content_id);
     }
 
     async function download_file_real(url: string, file_name: string) {
