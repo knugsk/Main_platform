@@ -10,6 +10,6 @@ urlpatterns = [
     path('comments/<int:parent_comment_id>/replies/', CommentReplyCreateView.as_view(), name='comment-reply-create'),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
     path('files/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
-    path('file/<str:filename>/', FileDownloadView.as_view(), name='file-download'),
+    path('download/', FileDownloadView.as_view(), name='file-download'),
     path('reupload/', FileUploadView.as_view(), name='file-upload'),
 ]
