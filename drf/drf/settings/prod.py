@@ -33,8 +33,4 @@ if AWS_STORAGE_BUCKET_NAME:
     AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.{S3 리전}.amazonaws.com"
     AWS_S3_FILE_OVERWRITE = False
     AWS_QUERYSTRING_AUTH = False
-    AWS_S3_OBJECT_PARAMETERS = {
-        'ContentDisposition': 'attachment; filename="example.txt"',
-        'ContentType': 'text/plain',
-        'ContentEncoding': 'utf-8',  # UTF-8 인코딩 설정 추가
-    }
+    
