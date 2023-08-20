@@ -11,4 +11,5 @@ export default defineConfig({
     },
     envPrefix: ["VITE_"],
     plugins: [svelte(), tsconfigPaths(), mkcert()],
+    // plugins: [svelte(), tsconfigPaths()],
 });
