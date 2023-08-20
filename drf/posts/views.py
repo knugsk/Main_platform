@@ -8,11 +8,22 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
+import os
+import boto3
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
+
 
 from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.decorators import action
 from rest_framework import status
+
+S3_BUCKET_NAME = 'bucket-xgthnf'
+S3_REGION_NAME = 'ap-northeast-2'
 
 class CategoryRetrieveView(generics.RetrieveAPIView):
     queryset = Category.objects.all()
@@ -134,22 +145,45 @@ class FileListCreateView(generics.ListCreateAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
+
 class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
-
-    def perform_update(self, serializer):
-        files_data = self.request.FILES.getlist('files')
-        post_id = self.kwargs.get('pk')  # 게시물 ID 가져오기
-
-        if files_data and post_id:
-            for file_data in files_data:
-                file_instance = File(file=file_data, post_id=post_id)
-                file_instance.save()
-
-        serializer.save()
 
     def perform_destroy(self, instance):
         instance.file.delete()  # 연결된 파일 삭제
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FileDownloadView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        filename = kwargs.get('filename')        
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+        
+        try:
+            s3_client.download_file(S3_BUCKET_NAME, filename, os.path.join(settings.MEDIA_ROOT, filename))
+            return Response("File downloaded successfully.", status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+from rest_framework.parsers import FileUploadParser
+
+class FileUploadView(APIView):
+    parser_classes = (FileUploadParser,)
+
+    def post(self, request, *args, **kwargs):
+        file_obj = request.data['file']
+        file_name = file_obj.name
+
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+
+        try:
+            # S3 버킷에 파일 업로드
+            s3_client.upload_fileobj(file_obj, S3_BUCKET_NAME, file_name)
+            
+            return Response("File uploaded successfully.", status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
