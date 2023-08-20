@@ -11,7 +11,7 @@ urlpatterns = [
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
     path('file/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
     path('files/<str:filename>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
-    
+    path('reupload/', FileUploadView.as_view(), name='file-upload'),
 ]
 
 
