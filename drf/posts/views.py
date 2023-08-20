@@ -176,7 +176,7 @@ class FileDownloadView(APIView):
         try:
             # 파일 다운로드
             local_file_path = '' + filename_with_extension
-            s3_client.download_file(S3_BUCKET_NAME, filename_with_extension, local_file_path)
+            s3_client.download_file(S3_BUCKET_NAME, os.path.join(settings.MEDIA_ROOT, filename_with_extension), local_file_path)
             
             return Response("파일 다운로드 성공.", status=status.HTTP_200_OK)
         except botocore.exceptions.ClientError as e:
