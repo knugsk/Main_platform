@@ -246,7 +246,7 @@ class FileUploadView(ListCreateAPIView):
             post.files.add(file_obj)
         
         response_data = {
-            'files': [file.id for file in file_objects],
+            'files': [FileSerializer(file_obj).data for file_obj in file_objects],
             'post': post_id
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
