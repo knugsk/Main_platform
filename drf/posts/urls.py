@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CategoryPostListView, PostListView, PostDetailView, CommentCreateView, CommentReplyCreateView, FileRetrieveUpdateDestroyView, CommentUpdateView
-
+from .views import FileUploadView
 
 urlpatterns = [
     path('categories/<int:id>/posts', CategoryPostListView.as_view(), name='category-detail'),
@@ -12,14 +12,4 @@ urlpatterns = [
     path('file/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
     path('files/<str:filename>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
     path('reupload/', FileUploadView.as_view(), name='file-upload'),
-]
-
-
-from django.urls import path
-from .views import FileUploadView, FileDownloadView, FileDeleteView
-
-urlpatterns = [
-    path('upload/', FileUploadView.as_view(), name='file-upload'),
-    
-    path('delete/<str:filename>/', FileDeleteView.as_view(), name='file-delete'),
 ]
