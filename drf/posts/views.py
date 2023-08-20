@@ -161,7 +161,7 @@ class FileDownloadView(APIView):
         s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
         
         try:
-            s3_client.download_file(S3_BUCKET_NAME, filename, os.path.join(settings.MEDIA_ROOT, 'posts_files', filename))
+            s3_client.download_file(S3_BUCKET_NAME, filename, os.path.join(settings.MEDIA_ROOT, filename))
             return Response("File downloaded successfully.", status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
