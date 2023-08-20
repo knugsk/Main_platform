@@ -196,13 +196,58 @@ class FileDownloadView(APIView):
             else:
                 return Response("파일 다운로드 중에 오류가 발생했습니다.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser
+from .serializers import FileSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser
+from rest_framework.generics import ListCreateAPIView
+from .serializers import FileSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.parsers import MultiPartParser
+from rest_framework.generics import ListCreateAPIView
+from .serializers import FileSerializer
 
-class FileUploadView(generics.CreateAPIView):
-    queryset = File.objects.all()
+class FileUploadView(ListCreateAPIView):
     serializer_class = FileSerializer
-    permission_classes = [IsAuthorOrStaffOrAdmin]
+    permission_classes = [IsAuthorOrStaffOrAdmin]  # 필요한 권한 클래스로 대체해야 합니다.
+    parser_classes = (MultiPartParser,)
 
-    def perform_create(self, serializer):
-        post_id = self.request.data.get('post_id')
-        serializer.save(post_id=post_id)
-        return Response("파일 업로드 성공.", status=status.HTTP_201_CREATED)
+    def get_queryset(self):
+        post_id = self.kwargs.get('post')
+        try:
+            post = Post.objects.get(id=post_id)
+            return File.objects.filter(post=post)
+        except Post.DoesNotExist:
+            return File.objects.none()
+
+    def create(self, request, *args, **kwargs):
+        post_id = self.kwargs.get('post')
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response({"error": "해당 포스트가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        
+        files_data = request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
+
+        file_objects = []
+        for file_data in files_data:
+            serializer = self.get_serializer(data={'file': file_data, 'post': post_id})  # post_id 추가
+            serializer.is_valid(raise_exception=True)
+            serializer.save()  # 파일 객체 생성
+            file_objects.append(serializer.instance)
+
+        # 파일들을 해당 포스트와 연결
+        for file_obj in file_objects:
+            post.files.add(file_obj)
+        
+        response_data = {
+            'files': [file.id for file in file_objects],
+            'post': post_id
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED)
+        
