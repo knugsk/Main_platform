@@ -12,4 +12,4 @@ class CustomS3Storage(S3Boto3Storage):
 
     def get_available_name(self, name, max_length=None):
         # 파일명을 안전한 형태로 인코딩하여 반환
-        return super().get_available_name(name.encode('utf-8').decode('latin1'), max_length)
+        return super().get_available_name(name.encode('utf-8').decode('utf-8'), max_length)
