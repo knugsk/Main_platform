@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 
 import os
 import boto3
+import botocore
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -161,10 +162,18 @@ class FileDownloadView(APIView):
         s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
         
         try:
+            # S3 버킷에서 파일의 메타데이터 가져오기
+            s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=filename)
+            
+            # 파일 다운로드
             s3_client.download_file(S3_BUCKET_NAME, filename, os.path.join(settings.MEDIA_ROOT, filename))
+            
             return Response("File downloaded successfully.", status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                return Response("File not found.", status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response("An error occurred while downloading the file.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 from rest_framework.parsers import FileUploadParser
 
