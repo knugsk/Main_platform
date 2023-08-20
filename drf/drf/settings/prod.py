@@ -5,8 +5,8 @@ from django.core import *
 
 ALLOWED_HOSTS = ['3.35.121.91', 'knugsk.com']
 ACCESS_CONTROL_ALLOW_ORIGIN = ['*']
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
 CSRF_TRUSTED_ORIGINS = ['https://3.35.121.91/', 'https://knugsk.com/']
 DEBUG = False
 
