@@ -13,7 +13,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.decorators import action
 from rest_framework import status
-
+from drf.settings import prod
 
 class CategoryRetrieveView(generics.RetrieveAPIView):
     queryset = Category.objects.all()
@@ -153,3 +153,43 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.file.delete()  # 연결된 파일 삭제
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+import boto3
+from django.http import Http404
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import FileModel
+
+class LightsailBucketFileDownloadView(APIView):
+    def get_object(self, file_id):
+        try:
+            return FileModel.objects.get(id=file_id)
+        except FileModel.DoesNotExist:
+            raise Http404
+
+    def get(self, request, file_id, format=None):
+        file_obj = self.get_object(file_id)
+
+        # AWS Lightsail 버킷에 접근하기 위해 boto3 클라이언트 생성
+        s3 = boto3.client(
+            's3',
+            endpoint_url='https://your-lightsail-bucket-url',  # Lightsail 버킷 엔드포인트 URL
+        )
+
+        try:
+            # Lightsail 버킷에서 파일 데이터 가져오기
+            response = s3.get_object(
+                Bucket='YOUR_BUCKET_NAME',  # Lightsail 버킷 이름
+                Key=file_obj.file_field.name  # 파일 필드 이름
+            )
+            file_content = response['Body'].read()
+            content_type = response['ContentType']
+
+            # 파일 다운로드 응답 생성
+            download_response = Response(file_content, content_type=content_type)
+            download_response['Content-Disposition'] = f'attachment; filename="{file_obj.original_filename}"'
+            return download_response
+        except Exception as e:
+            raise Http404
