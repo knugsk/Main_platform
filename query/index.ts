@@ -231,6 +231,20 @@ const delete_file = async (file_id: string): Promise<boolean> => {
         return false;
     }
 };
+const download_file = async (file_name: string): Promise<boolean> => {
+    try {
+        const res = await axios.get(api + `/posts/files/${file_name}`, {
+            headers: {
+                Authorization: "Token " + get(access_token),
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return true;
+    } catch (err) {
+        return false;
+    }
+};
 
 // Comment Post
 const post_comment = async (post: string, text: string): Promise<boolean> => {
@@ -366,6 +380,7 @@ export {
     delete_content,
     modify_file,
     delete_file,
+    download_file,
     post,
     post_comment,
     post_comment_child,
