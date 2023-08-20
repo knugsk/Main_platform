@@ -201,7 +201,7 @@ const modify_file = async (
 
     // frm.append("post", content_id);
     for (let i = 0; i < files.length; i++) {
-        frm.append("files", files[i]);
+        frm.append("file", files[i]);
     }
 
     try {
