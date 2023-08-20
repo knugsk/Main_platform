@@ -187,7 +187,7 @@ class FileDownloadView(APIView):
             response = Response("파일 다운로드 성공.", status=status.HTTP_200_OK)
             
             # Content-Disposition 헤더 추가
-            response['Content-Disposition'] = f'attachment; filename="{filename_with_extension}"'
+            response['Content-Disposition'] = 'attachment;'
             
             return response
         except botocore.exceptions.ClientError as e:
