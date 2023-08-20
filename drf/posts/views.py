@@ -152,20 +152,23 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = FileSerializer
 
     def perform_update(self, serializer):
-        # Get the list of uploaded files
+        # 업로드된 파일 목록 가져오기
         files_data = self.request.FILES.getlist('files')
 
-        # Delete existing files associated with the file instance
-        serializer.instance.file.delete()
+        if files_data:
+            # 파일 인스턴스와 연결된 기존 파일 삭제
+            serializer.instance.file.delete()
 
-        # Store the new uploaded files
-        for file_data in files_data:
-            file_instance = File(file=file_data, post=serializer.instance)
-            file_instance.save()
+            # 새로 업로드된 파일 저장
+            for file_data in files_data:
+                file_instance = File(file=file_data, post=serializer.instance)
+                file_instance.save()
 
+        serializer.save()
     def perform_destroy(self, instance):
-        instance.file.delete()  # Delete the associated file
-        instance.delete()  # Delete the file instance
+        instance.file.delete()  # 연결된 파일 삭제
+        instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
 
+
+# git checkout
