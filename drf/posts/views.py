@@ -156,25 +156,28 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
 class FileDownloadView(APIView):
-    def get(self, request, *args, **kwargs):
-        filename = kwargs.get('filename')        
-        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
-        
-            # S3 버킷에서 파일의 메타데이터 가져오기
+    def __init__(self):
+        self.s3 = boto3.resource('s3')
+        self.bucket_name = S3_BUCKET_NAME  # Replace with your bucket name
+        self.config = boto3.s3.transfer.TransferConfig(use_threads=False)  # You can configure the transfer config as needed
+
+    def get(self, request, filename, format=None):
         try:
+            src_path = filename  # Assuming the filename is the object key in the S3 bucket
+
+
+            file_name = os.path.basename(src_path)
+
             # Download file from S3 bucket
-            response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=filename)
-            
-            content = response['Body'].read()
-            content_type = response['ContentType']
-            
-            # Set appropriate response headers
-            response = Response(content, content_type=content_type)
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
-            return response
+            local_file_path = os.path.abspath(file_name)
+            self.s3.meta.client.download_file(self.bucket_name, src_path, local_file_path, Config=self.config)
+
+            return Response({"message": "File downloaded successfully."}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
 
 from rest_framework.parsers import FileUploadParser
 
