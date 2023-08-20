@@ -199,12 +199,30 @@ class FileDownloadView(APIView):
 
 from rest_framework.parsers import FileUploadParser
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import File  # 필요한 모델 임포트
+from .serializers import FileSerializer  # 필요한 시리얼라이저 임포트
+import os
+
 class FileUploadView(APIView):
-    def perform_create(self, serializer):
+    def post(self, request, *args, **kwargs):
+        serializer = FileSerializer(data=request.data)
         
-            files_data = self.request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
+        if serializer.is_valid():
+            post_id = serializer.validated_data['post_id']
+            files_data = request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
 
             # 파일 정보 저장
             for file_data in files_data:
-                File.objects.create(file=file_data, post=serializer.instance)
+                file_instance = File.objects.create(file=file_data, post_id=post_id)
+                
+                # 파일을 스토리지에 저장 (예: media 폴더)
+                file_path = os.path.join('media', str(file_instance.file))
+                with open(file_path, 'wb') as file_destination:
+                    for chunk in file_data.chunks():
+                        file_destination.write(chunk)
 
+            return Response(serializer.data, status=201)
+        
+        return Response(serializer.errors, status=400)
