@@ -205,7 +205,7 @@ const modify_file = async (
     }
 
     try {
-        const res = await axios.post(api + `/posts/files`, frm, {
+        const res = await axios.post(api + `/posts/files/${content_id}`, frm, {
             headers: {
                 Authorization: "Token " + get(access_token),
                 "Content-Type": "multipart/form-data",
