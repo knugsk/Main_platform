@@ -234,7 +234,7 @@ const delete_file = async (file_id: string): Promise<boolean> => {
 const download_file = async (file_name: string): Promise<boolean> => {
     try {
         const res = await axios.get(
-            api + `/posts/files/${decodeURIComponent(file_name)}`,
+            api + `/posts/file/${decodeURIComponent(file_name)}`,
             {
                 headers: {
                     Authorization: "Token " + get(access_token),
