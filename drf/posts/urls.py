@@ -9,7 +9,9 @@ urlpatterns = [
     path('comments/<int:parent_comment_id>/replies/', CommentReplyCreateView.as_view(), name='comment-reply-create'),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
     path('files/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-detail'),
+    path('file/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-retrieve-update-destroy'),
 ]
+
 urlpatterns += [
     path('posts/<int:pk>/download/', PostDetailView.as_view(), name='download-file'),
 ]

@@ -147,25 +147,66 @@ class FileListCreateView(generics.ListCreateAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
+from drf.settings.prod import AWS_STORAGE_BUCKET_NAME
+import boto3
+from botocore.exceptions import NoCredentialsError
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework import generics
+from .models import File
+from .serializers import FileSerializer
+
 class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
+    def download_file_from_s3(self, file_key):
+
+        session = boto3.Session()  # IAM 역할 사용을 위한 세션 생성
+        s3 = session.client('s3')
+
+        try:
+            response = s3.get_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=file_key)
+            file_data = response['Body'].read()
+            return file_data
+        except NoCredentialsError:
+            return None
+
     def perform_update(self, serializer):
-        # 업로드된 파일 목록 가져오기
-        files_data = self.request.FILES.getlist('files')
+        instance = self.get_object()
+        new_file_data = self.request.FILES.get('file')
 
-        if files_data:
-            # 파일 인스턴스와 연결된 기존 파일 삭제
-            serializer.instance.file.delete()
+        if new_file_data:
+            # Delete old file from S3
+            session = boto3.Session()
+            s3 = session.client('s3')
 
-            # 새로 업로드된 파일 저장
-            for file_data in files_data:
-                file_instance = File(file=file_data, post=serializer.instance)
-                file_instance.save()
+            try:
+                s3.delete_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=instance.file.name)
+            except NoCredentialsError:
+                pass
+
+            # Upload new file to S3
+            file_key = f"files/{new_file_data.name}"
+            s3.upload_fileobj(new_file_data, AWS_STORAGE_BUCKET_NAME, file_key)
+
+            instance.file.delete()  # Delete old file instance from database
+            instance.file = file_key
+            instance.save()
 
         serializer.save()
+
     def perform_destroy(self, instance):
-        instance.file.delete()  # 연결된 파일 삭제
-        instance.delete()  # 파일 인스턴스 삭제
+
+        session = boto3.Session()  # IAM 역할 사용을 위한 세션 생성
+        s3 = session.client('s3')
+
+        try:
+            s3.delete_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=instance.file.name)
+        except NoCredentialsError:
+            pass
+
+        instance.file.delete()
+        instance.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
