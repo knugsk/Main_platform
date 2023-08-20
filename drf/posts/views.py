@@ -168,6 +168,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+import boto3
+import botocore
+
 class FileDownloadView(APIView):
     def get(self, request, *args, **kwargs):
         filename_with_extension = kwargs.get('filename')  # 파일 이름과 확장자
@@ -178,7 +184,12 @@ class FileDownloadView(APIView):
             local_file_path = '' + filename_with_extension
             s3_client.download_file(S3_BUCKET_NAME, filename_with_extension, local_file_path)
             
-            return Response("파일 다운로드 성공.", status=status.HTTP_200_OK)
+            response = Response("파일 다운로드 성공.", status=status.HTTP_200_OK)
+            
+            # Content-Disposition 헤더 추가
+            response['Content-Disposition'] = f'attachment; filename="{filename_with_extension}"'
+            
+            return response
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == "404":
                 return Response("파일을 찾을 수 없습니다.", status=status.HTTP_404_NOT_FOUND)
@@ -189,20 +200,11 @@ class FileDownloadView(APIView):
 from rest_framework.parsers import FileUploadParser
 
 class FileUploadView(APIView):
-    parser_classes = (FileUploadParser,)
+    def perform_create(self, serializer):
+        
+            files_data = self.request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
 
-    def post(self, request, *args, **kwargs):
-        file_obj = request.data['file']
-        file_name = file_obj.name
+            # 파일 정보 저장
+            for file_data in files_data:
+                File.objects.create(file=file_data, post=serializer.instance)
 
-        s3_client = boto3.client('s3', region_name=S3_REGION_NAME, bucket=S3_BUCKET_NAME)
-
-        try:
-            # S3 버킷에 파일 업로드
-            s3_client.upload_fileobj(file_obj, S3_BUCKET_NAME, file_name)
-            
-            return Response("File uploaded successfully.", status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    
