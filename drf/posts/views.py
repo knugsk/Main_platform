@@ -158,17 +158,23 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     
 class FileDownloadView(APIView):
     def get(self, request, *args, **kwargs):
-            filename = kwargs.get('filename')        
-            s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+        filename_with_extension = kwargs.get('filename')  # 파일 이름과 확장자
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+        
+        try:
+            # S3 버킷에서 파일의 메타데이터 가져오기
+            s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=filename_with_extension)
             
+            # 파일 다운로드
+            s3_client.download_file(S3_BUCKET_NAME, '/media/' + filename_with_extension, filename_with_extension)
             
-                # S3 버킷에서 파일의 메타데이터 가져오기
-            s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=filename)
-                
-                # 파일 다운로드
-            s3_client.download_file(S3_BUCKET_NAME,  '/media/'+ filename, filename)
-                
             return Response("File downloaded successfully.", status=status.HTTP_200_OK)
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                return Response("File not found.", status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response("An error occurred while downloading the file.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 from rest_framework.parsers import FileUploadParser
 
 class FileUploadView(APIView):
