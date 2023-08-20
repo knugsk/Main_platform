@@ -1,5 +1,7 @@
 from django.urls import path
 from .views import CategoryPostListView, PostListView, PostDetailView, CommentCreateView, CommentReplyCreateView, FileRetrieveUpdateDestroyView, CommentUpdateView
+from .views import LightsailBucketFileDownloadView
+
 urlpatterns = [
     path('categories/<int:id>/posts', CategoryPostListView.as_view(), name='category-detail'),
     path('posts/', PostListView.as_view(), name='post-list'),
@@ -8,6 +10,5 @@ urlpatterns = [
     path('comments/<int:parent_comment_id>/replies/', CommentReplyCreateView.as_view(), name='comment-reply-create'),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
     path('files/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-detail'),
-    # path('posts/<int:file_id>/download', S3ProxyView.as_view(), name='s3-proxy'),
-
+    path('posts/files/<int:file_id>/download/', LightsailBucketFileDownloadView.as_view(), name='file-download'),
 ]
