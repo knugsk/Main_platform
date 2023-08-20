@@ -164,8 +164,7 @@ class FileDownloadView(APIView):
             s3_client.download_file(S3_BUCKET_NAME, filename, os.path.join(settings.MEDIA_ROOT, filename))
             return Response("File downloaded successfully.", status=status.HTTP_200_OK)
         except Exception as e:
-            pass
-            # return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 from rest_framework.parsers import FileUploadParser
 
