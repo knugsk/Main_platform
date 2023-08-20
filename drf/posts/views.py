@@ -153,14 +153,3 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.file.delete()  # 연결된 파일 삭제
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-from rest_framework.views import APIView
-from rest_framework.response import Response
-import requests
-
-class S3ProxyView(APIView):
-    def get(self, request, file_id):
-        file_obj = get_object_or_404(File, id=file_id)  # 파일 모델에서 해당 ID의 파일 객체 가져오기
-        s3_url = f"https://bucket-xgthnf.s3.ap-northeast-2.amazonaws.com/media/{file_obj.path}"
-        response = requests.get(s3_url)
-        return Response(response.content, content_type=response.headers['Content-Type'])
