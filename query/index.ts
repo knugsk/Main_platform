@@ -233,12 +233,15 @@ const delete_file = async (file_id: string): Promise<boolean> => {
 };
 const download_file = async (file_name: string): Promise<boolean> => {
     try {
-        const res = await axios.get(api + `/posts/files/${file_name}`, {
-            headers: {
-                Authorization: "Token " + get(access_token),
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const res = await axios.get(
+            api + `/posts/files/${decodeURIComponent(file_name)}`,
+            {
+                headers: {
+                    Authorization: "Token " + get(access_token),
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
         return true;
     } catch (err) {
