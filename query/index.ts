@@ -199,18 +199,22 @@ const modify_file = async (
 ): Promise<boolean> => {
     let frm = new FormData();
 
-    frm.append("post", content_id);
+    // frm.append("post", content_id);
     for (let i = 0; i < files.length; i++) {
         frm.append("files", files[i]);
     }
 
     try {
-        const res = await axios.post(api + `/posts/reupload/`, frm, {
-            headers: {
-                Authorization: "Token " + get(access_token),
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const res = await axios.post(
+            api + `/posts/reupload/${content_id}`,
+            frm,
+            {
+                headers: {
+                    Authorization: "Token " + get(access_token),
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
         return true;
     } catch (err) {
