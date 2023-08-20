@@ -173,7 +173,7 @@ class LightsailBucketFileDownloadView(APIView):
         file_obj = self.get_object(file_id)
 
         # AWS Lightsail 버킷에 접근하기 위해 boto3 클라이언트 생성
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3', endpoint_url='https://bucket-xgthnf.s3.ap-northeast-2.amazonaws.com')
         try:
             # Lightsail 버킷에서 파일 데이터 가져오기
             response = s3.get_object(
