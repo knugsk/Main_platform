@@ -158,26 +158,17 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     
 
 class FileDownloadView(APIView):
-    def __init__(self):
-        self.s3 = boto3.resource('s3')
-        self.bucket_name = S3_BUCKET_NAME  # Replace with your bucket name
-        self.config = boto3.s3.transfer.TransferConfig(use_threads=False)  # You can configure the transfer config as needed
-
-    def get(self, request, filename, format=None):
+    def get(self, request, file_name):
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
         try:
-            src_path = filename  # Assuming the filename is the object key in the S3 bucket
-
-
-            file_name = os.path.basename(src_path)
-
-            # Download file from S3 bucket
-            local_file_path = os.path.abspath(file_name)
-            self.s3.meta.client.download_file(self.bucket_name, src_path, local_file_path, Config=self.config)
-
-            return Response({"message": "File downloaded successfully."}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-
+            # S3 버킷에서 파일 다운로드
+            response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=file_name)
+            return FileResponse(response['Body'])
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "NoSuchKey":
+                return Response("The object does not exist.", status=status.HTTP_404_NOT_FOUND)
+            else:
+                raise
 
 from rest_framework.parsers import FileUploadParser
 
