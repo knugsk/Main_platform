@@ -197,25 +197,12 @@ class FileDownloadView(APIView):
                 return Response("파일 다운로드 중에 오류가 발생했습니다.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import FileSerializer  # 필요한 Serializer 임포트
-from .models import File  # 필요한 Model 임포트
+class FileUploadView(generics.CreateAPIView):
+    queryset = File.objects.all()
+    serializer_class = FileSerializer
+    permission_classes = [IsAuthorOrStaffOrAdmin]
 
-class FileUploadView(APIView):
-    def post(self, request, *args, **kwargs):
-        # URL 패턴에서 post_id를 가져오거나, 요청 데이터에서 가져올 수 있음
-        post_id = kwargs.get('post_id')  # URL 패턴으로 전달되는 경우
-
-        serializer = FileSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            files_data = request.FILES.getlist('files')  # 업로드된 파일 목록 가져오기
-
-            # 파일 정보 저장
-            for file_data in files_data:
-                file_instance = File.objects.create(file=file_data, post_id=post_id)
-                file_instance.save()
-            return Response(serializer.data, status=201)
-        
-        return Response(serializer.errors, status=400)
+    def perform_create(self, serializer):
+        post_id = self.request.data.get('post_id')
+        serializer.save(post_id=post_id)
+        return Response("파일 업로드 성공.", status=status.HTTP_201_CREATED)
