@@ -77,6 +77,19 @@
             if(b) get_data(params.content_id);
         });
     }
+
+    async function download_file_real(url: string, file_name: string) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = file_name;
+        link.style.display = 'none';
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+    }
 </script>
 
 <div class="container_content">
@@ -90,7 +103,7 @@
             <div class="board_files">
                 <p class="text_info_board_files">누르고 다운받으세요!</p>
                 {#each filterNonImageFiles(data.files) as file, index}
-                    <button class="box_file" on:click={() => {download_file2(file.file, extractFileNameFromUrl(file.file));}}>
+                    <button class="box_file" on:click={() => {download_file_real(file.file, extractFileNameFromUrl(file.file));}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
                             <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"></path>
                         </svg>
@@ -114,7 +127,7 @@
                     </button>
                 {/each}
                 {#each filterImages(data.files) as file, index}
-                    <button class="box_file" on:click={() => {download_file2(file.file, extractFileNameFromUrl(file.file));}}>
+                    <button class="box_file" on:click={() => {download_file_real(file.file, extractFileNameFromUrl(file.file));}}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256">
                           <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"></path>
                       </svg>
