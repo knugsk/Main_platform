@@ -96,7 +96,7 @@
                         </svg>
                         <div class="box_file_des">
                             <div class="card_file">
-                                <p class="text_name_file">{extractFileNameFromUrl(file.file)}</p>
+                                <p class="text_name_file">{decodeURIComponent(extractFileNameFromUrl(file.file))}</p>
                             </div>
                         </div>
                         <button class="btn_delete_file" on:click|stopPropagation={async (event) => {
@@ -120,7 +120,7 @@
                       </svg>
                       <div class="box_file_des">
                           <div class="card_file">
-                              <p class="text_name_file">{extractFileNameFromUrl(file.file)}</p>
+                              <p class="text_name_file">{decodeURIComponent(extractFileNameFromUrl(file.file))}</p>
                           </div>
                       </div>
                       <button class="btn_delete_file" on:click|stopPropagation={async (event) => {
