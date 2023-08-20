@@ -249,6 +249,31 @@ const download_file = async (file_name: string): Promise<boolean> => {
     }
 };
 
+const download_file2 = async (
+    url: string,
+    file_name: string
+): Promise<boolean> => {
+    try {
+        const response = await axios.get(url, { responseType: "blob" });
+
+        const blob = new Blob([response.data], {
+            type: response.headers["content-type"],
+        });
+        const url_link = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url_link;
+        a.download = file_name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        return true;
+    } catch (error) {
+        console.error("Error:", error);
+        return false;
+    }
+};
+
 // Comment Post
 const post_comment = async (post: string, text: string): Promise<boolean> => {
     let frm = new FormData();
@@ -384,6 +409,7 @@ export {
     modify_file,
     delete_file,
     download_file,
+    download_file2,
     post,
     post_comment,
     post_comment_child,
