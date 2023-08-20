@@ -205,12 +205,16 @@ const modify_file = async (
     }
 
     try {
-        const res = await axios.post(api + `/posts/reupload/`, frm, {
-            headers: {
-                Authorization: "Token " + get(access_token),
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const res = await axios.post(
+            api + `/posts/reupload/${content_id}/`,
+            frm,
+            {
+                headers: {
+                    Authorization: "Token " + get(access_token),
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
         return true;
     } catch (err) {
