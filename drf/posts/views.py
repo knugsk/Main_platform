@@ -155,21 +155,19 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.file.delete()  # 연결된 파일 삭제
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
-class FileDownloadView(APIView):
-    def get(self, request, file_name):
-        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
-        try:
-            # S3 버킷에서 파일 다운로드
-            response = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=file_name)
-            return FileResponse(response['Body'])
-        except botocore.exceptions.ClientError as e:
-            if e.response['Error']['Code'] == "NoSuchKey":
-                return Response("The object does not exist.", status=status.HTTP_404_NOT_FOUND)
-            else:
-                raise
-
+class FileDownloadView(APIView):    
+    def get(self, request, *args, **kwargs):
+            filename = kwargs.get('filename')        
+            s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+            
+            
+                # S3 버킷에서 파일의 메타데이터 가져오기
+            s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=filename)
+                
+                # 파일 다운로드
+            s3_client.download_file(S3_BUCKET_NAME, filename, '/media/' + filename)
+                
+            return Response("File downloaded successfully.", status=status.HTTP_200_OK)
 from rest_framework.parsers import FileUploadParser
 
 class FileUploadView(APIView):
