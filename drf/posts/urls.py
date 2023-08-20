@@ -9,6 +9,17 @@ urlpatterns = [
     path('comments/create/', CommentCreateView.as_view(), name='comment-create'),
     path('comments/<int:parent_comment_id>/replies/', CommentReplyCreateView.as_view(), name='comment-reply-create'),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
-    path('files/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-detail'),
+    path('file/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
+    path('files/<str:filename>/', FileRetrieveUpdateDestroyView.as_view(), name='file-download'),
+    path('reupload/', FileUploadView.as_view(), name='file-upload'),
+]
+
+
+from django.urls import path
+from .views import FileUploadView, FileDownloadView, FileDeleteView
+
+urlpatterns = [
+    path('upload/', FileUploadView.as_view(), name='file-upload'),
     
+    path('delete/<str:filename>/', FileDeleteView.as_view(), name='file-delete'),
 ]
