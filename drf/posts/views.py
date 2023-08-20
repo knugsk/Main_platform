@@ -1,3 +1,9 @@
+import boto3
+import botocore.exceptions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Category, Post, Comment, File
@@ -156,24 +162,29 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+import boto3
+import botocore.exceptions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 class FileDownloadView(APIView):
     def get(self, request, *args, **kwargs):
         filename_with_extension = kwargs.get('filename')  # 파일 이름과 확장자
-        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)  # bucket 인자를 제거하고 s3_client 초기화
         
         try:
-            # S3 버킷에서 파일의 메타데이터 가져오기
-            s3_client.head_object(Bucket=S3_BUCKET_NAME, Key=filename_with_extension)
-            
             # 파일 다운로드
-            s3_client.download_file(S3_BUCKET_NAME, '/media/' + filename_with_extension, filename_with_extension)
+            local_file_path = '' + filename_with_extension
+            s3_client.download_file(S3_BUCKET_NAME, filename_with_extension, local_file_path)
             
-            return Response("File downloaded successfully.", status=status.HTTP_200_OK)
+            return Response("파일 다운로드 성공.", status=status.HTTP_200_OK)
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == "404":
-                return Response("File not found.", status=status.HTTP_404_NOT_FOUND)
+                return Response("파일을 찾을 수 없습니다.", status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response("An error occurred while downloading the file.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response("파일 다운로드 중에 오류가 발생했습니다.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 from rest_framework.parsers import FileUploadParser
 
@@ -184,7 +195,7 @@ class FileUploadView(APIView):
         file_obj = request.data['file']
         file_name = file_obj.name
 
-        s3_client = boto3.client('s3', region_name=S3_REGION_NAME)
+        s3_client = boto3.client('s3', region_name=S3_REGION_NAME, bucket=S3_BUCKET_NAME)
 
         try:
             # S3 버킷에 파일 업로드
