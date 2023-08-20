@@ -206,7 +206,7 @@ const modify_file = async (
 
     try {
         const res = await axios.post(
-            api + `/posts/reupload/${content_id}`,
+            api + `/posts/reupload/${content_id}/`,
             frm,
             {
                 headers: {
