@@ -175,7 +175,7 @@ class LightsailBucketFileDownloadView(APIView):
         # AWS Lightsail 버킷에 접근하기 위해 boto3 클라이언트 생성
         s3 = boto3.client(
             's3',
-            endpoint_url='https://your-lightsail-bucket-url',  # Lightsail 버킷 엔드포인트 URL
+            endpoint_url='bucket-xgthnf.s3.ap-northeast-2.amazonaws.com',  # Lightsail 버킷 엔드포인트 URL
         )
 
         try:
