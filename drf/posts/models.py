@@ -39,5 +39,5 @@ class Comment(models.Model):
         return f"{self.author}님이 {self.post.title}에 작성한 댓글"
 
 class File(models.Model):
-    file = models.FileField(upload_to='post_files/')
+    file = models.FileField(upload_to='')
     post = models.ForeignKey(Post, related_name='files', on_delete=models.CASCADE)
