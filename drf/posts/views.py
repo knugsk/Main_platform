@@ -13,7 +13,6 @@ from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.decorators import action
 from rest_framework import status
-from drf.settings import prod
 
 class CategoryRetrieveView(generics.RetrieveAPIView):
     queryset = Category.objects.all()
@@ -61,16 +60,18 @@ class PostListView(generics.ListCreateAPIView):
                 File.objects.create(file=file_data, post=serializer.instance)
 
 
-from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework import generics
+from .models import Post, Category
+from .serializers import PostSerializer
+from .permissions import IsAuthorOrStaffOrAdmin
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrStaffOrAdmin]
 
-    # 수정 기능 추가 (이전 설명 참고)
     def perform_update(self, serializer):
         category_name = self.request.data.get('category')
         try:
@@ -79,8 +80,7 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
             return Response("잘못된 카테고리 이름입니다.", status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save(category=category)
-        
-    # 삭제 기능 추가
+
     def perform_destroy(self, instance):
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -153,4 +153,3 @@ class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         instance.file.delete()  # 연결된 파일 삭제
         instance.delete()  # 파일 인스턴스 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
-
