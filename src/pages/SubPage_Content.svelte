@@ -79,15 +79,16 @@
     }
 
     async function download_file_real(url: string, file_name: string) {
+        const response = await fetch(url);
+        const blob = await response.blob();
+
         const link = document.createElement('a');
-        link.href = url;
+        link.href = URL.createObjectURL(blob);
         link.download = file_name;
         link.style.display = 'none';
 
         document.body.appendChild(link);
-
         link.click();
-
         document.body.removeChild(link);
     }
 </script>
