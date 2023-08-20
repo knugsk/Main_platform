@@ -9,6 +9,6 @@ urlpatterns = [
     path('comments/<int:parent_comment_id>/replies/', CommentReplyCreateView.as_view(), name='comment-reply-create'),
     path('comments/<int:pk>/', CommentUpdateView.as_view(), name='comment-update-delete'),
     path('files/<int:pk>/', FileRetrieveUpdateDestroyView.as_view(), name='file-detail'),
-    path('posts/<int:file_id>/download', S3ProxyView.as_view(), name='s3-proxy'),
+    # path('posts/<int:file_id>/download', S3ProxyView.as_view(), name='s3-proxy'),
 
 ]
