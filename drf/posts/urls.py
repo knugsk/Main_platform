@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import CategoryPostListView, PostListView, PostDetailView, CommentCreateView, CommentReplyCreateView, FileListCreateView, FileRetrieveUpdateDestroyView, CommentUpdateView
-from .views import S3ProxyView
+from .views import CategoryPostListView, PostListView, PostDetailView, CommentCreateView, CommentReplyCreateView, FileRetrieveUpdateDestroyView, CommentUpdateView
 urlpatterns = [
     path('categories/<int:id>/posts', CategoryPostListView.as_view(), name='category-detail'),
     path('posts/', PostListView.as_view(), name='post-list'),
