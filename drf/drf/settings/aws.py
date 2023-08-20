@@ -7,3 +7,9 @@ class AwsMediaStorage(S3Boto3Storage):
     location='media'
     default_acl='public-read'
 
+class CustomS3Storage(S3Boto3Storage):
+    location = 'media'  # 업로드된 파일이 저장될 S3 경로 설정
+
+    def get_available_name(self, name, max_length=None):
+        # 파일명을 안전한 형태로 인코딩하여 반환
+        return super().get_available_name(name.encode('utf-8').decode('latin1'), max_length)
