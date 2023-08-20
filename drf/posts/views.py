@@ -160,28 +160,24 @@ import boto3
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import FileModel
+from .models import File
 
 class LightsailBucketFileDownloadView(APIView):
     def get_object(self, file_id):
         try:
-            return FileModel.objects.get(id=file_id)
-        except FileModel.DoesNotExist:
+            return File.objects.get(id=file_id)
+        except File.DoesNotExist:
             raise Http404
 
     def get(self, request, file_id, format=None):
         file_obj = self.get_object(file_id)
 
         # AWS Lightsail 버킷에 접근하기 위해 boto3 클라이언트 생성
-        s3 = boto3.client(
-            's3',
-            endpoint_url='bucket-xgthnf.s3.ap-northeast-2.amazonaws.com',  # Lightsail 버킷 엔드포인트 URL
-        )
-
+        s3 = boto3.client('s3')
         try:
             # Lightsail 버킷에서 파일 데이터 가져오기
             response = s3.get_object(
-                Bucket='YOUR_BUCKET_NAME',  # Lightsail 버킷 이름
+                Bucket='bucket-xgthnf',  # Lightsail 버킷 이름
                 Key=file_obj.file_field.name  # 파일 필드 이름
             )
             file_content = response['Body'].read()
