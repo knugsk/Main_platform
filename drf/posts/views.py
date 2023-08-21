@@ -219,7 +219,7 @@ from .serializers import FileSerializer
 
 class FileUploadView(ListCreateAPIView):
     serializer_class = FileSerializer
-    permission_classes = [IsAuthorOrStaffOrAdmin]  # 필요한 권한 클래스로 대체해야 합니다.
+    permission_classes = [IsAuthorOrSender]  # 필요한 권한 클래스로 대체해야 합니다.
 
     def get_queryset(self):
         post_id = self.kwargs.get('post')
