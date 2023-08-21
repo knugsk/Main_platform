@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Category, Post, Comment, File
 from .serializers import CategorySerializer, PostSerializer, CommentSerializer, FileSerializer
-from .permissions import IsStaffOrAdminWriteOnly, IsAuthorOrStaffOrAdmin
+from .permissions import IsStaffOrAdminWriteOnly, IsAuthorOrStaffOrAdmin, IsAuthorOrSender
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
@@ -156,11 +156,16 @@ class FileListCreateView(generics.ListCreateAPIView):
 class FileRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = File.objects.all()
     serializer_class = FileSerializer
+    permission_classes = [IsAuthorOrSender]
 
     def perform_destroy(self, instance):
-        instance.file.delete()  # 연결된 파일 삭제
-        instance.delete()  # 파일 인스턴스 삭제
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        user = self.request.user
+        if user == instance.post.author or user.is_staff or user.is_superuser:
+            instance.file.delete()  # 연결된 파일 삭제
+            instance.delete()  # 파일 인스턴스 삭제
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
     
 import boto3
 import botocore.exceptions
@@ -215,7 +220,6 @@ from .serializers import FileSerializer
 class FileUploadView(ListCreateAPIView):
     serializer_class = FileSerializer
     permission_classes = [IsAuthorOrStaffOrAdmin]  # 필요한 권한 클래스로 대체해야 합니다.
-    parser_classes = (MultiPartParser,)
 
     def get_queryset(self):
         post_id = self.kwargs.get('post')
@@ -249,5 +253,14 @@ class FileUploadView(ListCreateAPIView):
             'files': [FileSerializer(file_obj).data for file_obj in file_objects],
             'post': post_id
         }
-        return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+        
+        user = self.request.user
+
+        if post.author == user or user.is_staff or user.is_superuser:
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
         
