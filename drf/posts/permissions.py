@@ -29,3 +29,4 @@ class IsAuthorOrSender(BasePermission):
 
         # Check if the sender is the same as the author of the post
         return obj.post.author == request.user or request.user.is_staff or request.user.is_superuser
+

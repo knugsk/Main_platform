@@ -217,9 +217,32 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.generics import ListCreateAPIView
 from .serializers import FileSerializer
 
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
+class CanUploadFiles(BasePermission):
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True  # Allow read-only permissions for all users
+
+        post_id = view.kwargs.get('post')
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return False  # If the post doesn't exist, deny permission
+
+        user = request.user
+
+        # Allow upload if the user is the author of the post or is staff/superuser
+        return post.author == user or user.is_staff or user.is_superuser
+
+
+
+
+
+
 class FileUploadView(ListCreateAPIView):
     serializer_class = FileSerializer
-    permission_classes = [IsAuthorOrSender]  # 필요한 권한 클래스로 대체해야 합니다.
+    permission_classes = [CanUploadFiles]  # 필요한 권한 클래스로 대체해야 합니다.
 
     def get_queryset(self):
         post_id = self.kwargs.get('post')
@@ -254,13 +277,10 @@ class FileUploadView(ListCreateAPIView):
             'post': post_id
         }
 
-
-        
         user = self.request.user
 
         if post.author == user or user.is_staff or user.is_superuser:
             return Response(response_data, status=status.HTTP_201_CREATED)
-
 
         return Response(status=status.HTTP_403_FORBIDDEN)
         
