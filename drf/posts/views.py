@@ -86,7 +86,7 @@ from .serializers import PostSerializer
 from .permissions import IsAuthorOrStaffOrAdmin
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-published_date')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrStaffOrAdmin]
 
