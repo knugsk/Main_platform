@@ -6,6 +6,10 @@
 
   import { sign_out } from "query";
   import { is_login, access_token } from "@/lib/store";
+  import { onMount } from "svelte";
+
+  import { writable } from 'svelte/store';
+  const showLogoutButton = writable(true);
 
   let checked = false;
   const route_list: routeType[] = [
@@ -17,11 +21,30 @@
 
   let top4_list: top4Type[]  = [] // {img_url: "", route: ""}
 
+  const checkLocation = () => {
+  const currentPath = window.location.hash;
+    console.log("Current Path:", currentPath);
+    if (currentPath === "" || currentPath === "#/") {
+      $showLogoutButton = false;
+    } else {
+      $showLogoutButton = true;
+    }
+    console.log("Show Logout Button:", $showLogoutButton);
+  };
+
+  onMount(() => {
+    console.log("Component Mounted");
+    checkLocation();
+    window.addEventListener('hashchange', checkLocation);
+    return () => {
+      window.removeEventListener('hashchange', checkLocation);
+    };
+  });
 </script>
 
 <div class="container_main wrapper">
-  {#if $is_login === true && (window.location.pathname !== "/" && window.location.pathname !== "/#/")}
-    <a class="btn_sign" href="#/" on:click={() => {
+  {#if $is_login && $showLogoutButton && !checked}
+    <a class="btn_sign_2" href="#/" on:click={() => {
         sign_out();
     }}>
         <span>
