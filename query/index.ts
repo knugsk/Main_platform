@@ -54,6 +54,7 @@ const sign_out = async () => {
     }
 };
 const sign_up = async (
+    user_id: string,
     first_name: string,
     last_name: string,
     password: string,
@@ -61,7 +62,7 @@ const sign_up = async (
 ) => {
     let frm = new FormData();
 
-    frm.append("stu_id", get(user_id));
+    frm.append("stu_id", user_id);
     frm.append("first_name", first_name);
     frm.append("last_name", last_name);
     frm.append("password", password);

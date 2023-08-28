@@ -1,7 +1,7 @@
 const koreantime = (inputDateString: string): string => {
     const inputDate = new Date(inputDateString);
 
-    const koreaTimeOffset = 9 * 60; // 한국 시간대 UTC+9
+    const koreaTimeOffset = 9 * 60 * 0; // 한국 시간대 UTC+9
     const koreaDate = new Date(
         inputDate.getTime() + koreaTimeOffset * 60 * 1000
     );

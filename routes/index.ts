@@ -3,7 +3,7 @@ import MainPage_Contents from "@/pages/MainPage_Contents.svelte";
 import MainPage_HallOfFame from "@/pages/MainPage_Hall_of_fame.svelte";
 
 import SubPage_Write from "@/pages/SubPage_Write.svelte";
-import SubPage_Content from "@/pages/SubPage_Content.svelte";
+import SugPage_NewContent from "@pages/SubPage_NewContent.svelte";
 import SubPage_SignUp from "@/pages/SubPage_SignUp.svelte";
 import SubPage_SignIn from "@/pages/SubPage_SignIn.svelte";
 
@@ -18,7 +18,7 @@ export default {
     /**
      * Sub Pages
      */
-    "/contents/content/:content_id": SubPage_Content,
+    "/contents/content/:content_id": SugPage_NewContent,
     "/contents/:contents_id": MainPage_Contents,
 
     "/hall_of_fame": MainPage_HallOfFame,

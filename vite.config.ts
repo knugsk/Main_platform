@@ -7,9 +7,9 @@ export default defineConfig({
     server: {
         strictPort: true,
         open: true,
-        https: true,
+        // https: true,
     },
     envPrefix: ["VITE_"],
-    plugins: [svelte(), tsconfigPaths(), mkcert()],
-    // plugins: [svelte(), tsconfigPaths()],
+    // plugins: [svelte(), tsconfigPaths(), mkcert()],
+    plugins: [svelte(), tsconfigPaths()],
 });

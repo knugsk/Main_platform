@@ -3,7 +3,6 @@
 
     import SubNav_ProjectNav from "@/components/SubNav_ProjectNav.svelte";
     
-    import { afterUpdate, beforeUpdate, onMount } from "svelte";
     import { get_contents } from "query";
     import koreantime from "@/lib/datetime";
     import { push } from "svelte-spa-router";
@@ -62,10 +61,10 @@
     <div class="container_bar">
         {#if data !== null && data !== undefined}
             {#each data as content, index }
-                <button class="bar_content" on:click={() => {push(`/contents/content/${content.id}`);}}>
-                    <p class="text_bar">{content.title}</p>
-                    <p class="text_bar">{koreantime(content.published_date)}</p>
-                    <p class="text_bar">{`작성자: ${content.author.first_name} ${content.author.last_name}`}</p>
+                <button class={"bar_content" + (index == 0 ? " first" : "")} on:click={() => {push(`/contents/content/${content.id}`);}}>
+                    <p class="text_bar title">{content.title}</p>
+                    <p class="text_bar author">{`작성자: ${content.author.first_name} ${content.author.last_name}`}</p>
+                    <p class="text_bar date">{koreantime(content.published_date)}</p>
                 </button>
             {/each}
             {#if data.length === 0}
