@@ -4,6 +4,9 @@
   import Router from "svelte-spa-router";
   import routes from "@routes/index";
 
+  import { sign_out } from "query";
+  import { is_login, access_token } from "@/lib/store";
+
   let checked = false;
   const route_list: routeType[] = [
     {name: "홈",  route: "#/"},
@@ -17,6 +20,17 @@
 </script>
 
 <div class="container_main wrapper">
+  {#if $is_login === true}
+    <a class="btn_sign" href="#/" on:click={() => {
+        sign_out();
+    }}>
+        <span>
+            <div class="black">
+                로그아웃
+            </div>
+        </span>
+    </a>
+  {/if}
   <input type="checkbox" id="burger-toggle" bind:checked={checked}>
   <label for="burger-toggle" class="burger-menu">
     <div class="line" />
