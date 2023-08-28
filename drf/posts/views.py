@@ -46,7 +46,7 @@ class CategoryPostListView(generics.ListAPIView):
 from rest_framework.authtoken.models import Token
 
 class PostListView(generics.ListCreateAPIView):
-    queryset = Post.objects.all().order_by('-published_date')
+    queryset = Post.objects.all().order_by('published_date')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated | IsStaffOrAdminWriteOnly]
 
@@ -86,7 +86,7 @@ from .serializers import PostSerializer
 from .permissions import IsAuthorOrStaffOrAdmin
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all().order_by('-published_date')
+    queryset = Post.objects.all().order_by('published_date')
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrStaffOrAdmin]
 
