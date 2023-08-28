@@ -46,7 +46,7 @@ class CategoryPostListView(generics.ListAPIView):
 from rest_framework.authtoken.models import Token
 
 class PostListView(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-published_date')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated | IsStaffOrAdminWriteOnly]
 
