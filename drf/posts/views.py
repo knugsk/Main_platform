@@ -111,6 +111,10 @@ class CommentUpdateView(generics.RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         comment = self.get_object()
         if comment.author == self.request.user or self.request.user.is_staff or self.request.user.is_admin:
+            excluded_fields = ['published_date']
+            for field in excluded_fields:
+                if field in serializer.validated_data:
+                    del serializer.validated_data[field]
             serializer.save()
         else:
             raise PermissionDenied("You do not have permission to update this comment.")
