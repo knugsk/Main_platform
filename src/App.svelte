@@ -20,7 +20,7 @@
 </script>
 
 <div class="container_main wrapper">
-  {#if $is_login === true && (window.location.pathname == "/" || window.location.pathname == "/#/")}
+  {#if $is_login === true && (window.location.pathname !== "/" && window.location.pathname !== "/#/")}
     <a class="btn_sign" href="#/" on:click={() => {
         sign_out();
     }}>
