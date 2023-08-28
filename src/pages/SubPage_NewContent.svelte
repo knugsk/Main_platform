@@ -141,16 +141,43 @@
                 {/each}
               </div>
             {/if}
-            {#if filterNonImageFiles(data.files).length !== 0}
-              <div class="box_files">
-                {#each filterNonImageFiles(data.files) as file, index}
+            <div class="box_files">
+              {#each filterNonImageFiles(data.files) as file, index}
+                <button
+                  class="box_file"
+                  on:click={() => {
+                    download_file_real(file.file, extractFileNameFromUrl(file.file));
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    fill="#000000"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"
+                    />
+                  </svg>
+                  <div class="card_file">
+                    <p class="text_name_file">
+                      {decodeURIComponent(extractFileNameFromUrl(file.file))}
+                    </p>
+                  </div>
                   <button
-                    class="box_file"
-                    on:click={() => {
-                      download_file_real(file.file, extractFileNameFromUrl(file.file));
+                    class="btn_delete_file"
+                    on:click|stopPropagation={async (event) => {
+                      event.stopPropagation();
+                      await delete_file(file.id).then((b) => {
+                        if (b) {
+                          get_data(params.content_id);
+                        }
+                      });
                     }}
                   >
                     <svg
+                      class="svg"
                       xmlns="http://www.w3.org/2000/svg"
                       width="32"
                       height="32"
@@ -158,50 +185,21 @@
                       viewBox="0 0 256 256"
                     >
                       <path
-                        d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"
+                        d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"
                       />
                     </svg>
-                    <div class="card_file">
-                      <p class="text_name_file">
-                        {decodeURIComponent(extractFileNameFromUrl(file.file))}
-                      </p>
-                    </div>
-                    <button
-                      class="btn_delete_file"
-                      on:click|stopPropagation={async (event) => {
-                        event.stopPropagation();
-                        await delete_file(file.id).then((b) => {
-                          if (b) {
-                            get_data(params.content_id);
-                          }
-                        });
-                      }}
-                    >
-                      <svg
-                        class="svg"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        fill="#000000"
-                        viewBox="0 0 256 256"
-                      >
-                        <path
-                          d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"
-                        />
-                      </svg>
-                    </button>
                   </button>
-                {/each}
-                <button
-                  class="box_file_append"
-                  on:click={async () => {
-                    await uploadFiles();
-                  }}
-                >
-                  <h1>+</h1>
                 </button>
-              </div>
-            {/if}
+              {/each}
+              <button
+                class="box_file_append"
+                on:click={async () => {
+                  await uploadFiles();
+                }}
+              >
+                <h1>+</h1>
+              </button>
+            </div>
         </div>
         <div class="box_content_edit">
             <button class="box_content_edit_btn"
