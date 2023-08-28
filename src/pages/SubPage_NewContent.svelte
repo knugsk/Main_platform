@@ -192,6 +192,14 @@
                     </button>
                   </button>
                 {/each}
+                <button
+                  class="box_file_append"
+                  on:click={async () => {
+                    await uploadFiles();
+                  }}
+                >
+                  <h1>+</h1>
+                </button>
               </div>
             {/if}
         </div>

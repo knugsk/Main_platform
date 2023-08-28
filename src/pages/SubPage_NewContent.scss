@@ -124,8 +124,6 @@
     align-items: center;
     justify-content: space-between;
 
-    margin-top: 4%;
-
     padding: 1%;
 
     flex-direction: row;
@@ -140,6 +138,31 @@
 
     &:hover {
         transform: scale(0.9);
+        transition: all 0.1s linear;
+    }
+}
+.box_file_append {
+    width: 10%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1%;
+
+    flex-direction: row;
+
+    background-color: transparent;
+    border-width: 0px;
+    border-radius: 15px;
+
+    overflow-x: scroll;
+
+    transform: scale(1);
+    transition: all 0.1s linear;
+
+    &:hover {
+        transform: scale(0.75);
         transition: all 0.1s linear;
     }
 }
